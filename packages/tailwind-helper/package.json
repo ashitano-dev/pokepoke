@@ -1,0 +1,19 @@
+{
+  "name": "@pokepoke/tailwind-helper",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "pnpm run check --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pokepoke/tailwind-config": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.2",
+    "tailwind-variants": "^1.0.0"
+  },
+  "devDependencies": {
+    "@pokepoke/tsconfig": "workspace:*"
+  }
+}
