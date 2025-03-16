@@ -1,0 +1,30 @@
+app:
+  - .github/filters.yaml
+  - .github/workflows/app-*.yaml
+  - apps/**
+  - packages/**
+  - tools/**
+  - package.json
+  - turbo.json
+  - biome.json
+
+backend:
+  - .github/filters.yaml
+  - .github/workflows/api-*.yaml
+  - apps/api/**
+  - packages/**
+  - tools/**
+  - package.json
+  - turbo.json
+  - biome.json
+
+catalog:
+  - .github/filters.yaml
+  - .github/workflows/catalog-*.yaml
+  - apps/catalog/**
+  - apps/web/**
+  - packages/ui/**
+  - tools/**
+  - package.json
+  - turbo.json
+  - biome.json
