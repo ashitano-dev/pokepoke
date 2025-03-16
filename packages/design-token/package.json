@@ -1,5 +1,5 @@
 {
-  "name": "@pokepoke/design-tokens",
+  "name": "@pokepoke/design-token",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
