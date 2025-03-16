@@ -1,8 +1,5 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ESNext",
-        "strict": true,
-        "moduleResolution": "node"
-    }
+  "extends": "@pokepoke/tsconfig/elysiajs.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

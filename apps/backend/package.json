@@ -4,10 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx ./main.ts"
+    "dev": "tsx ./src/app/index.ts",
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "bun run check --write",
+    "build": "tsx build.ts",
+    "start": "node ./dist/index.mjs"
   },
   "dependencies": {
     "elysia": "~1.2.25",
-    "@elysiajs/node": "~1.2.6"
+    "@elysiajs/node": "~1.2.6",
+    "@pokepoke/tsconfig": "workspace:*"
   }
 }
