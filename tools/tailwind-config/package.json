@@ -1,0 +1,24 @@
+{
+  "name": "@pokepoke/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./global.css": "./global.css"
+  },
+  "scripts": {
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "bun run check --write"
+  },
+  "dependencies": {
+    "@pokepoke/design-token": "workspace:*",
+    "chroma-js": "^2.6.1-0"
+  },
+  "devDependencies": {
+    "@pokepoke/tsconfig": "workspace:*",
+    "@types/chroma-js": "^2.4.5",
+    "tailwindcss": "^3.4.17"
+  }
+}
