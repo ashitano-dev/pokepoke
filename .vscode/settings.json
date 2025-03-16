@@ -1,0 +1,220 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[properties]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "commit-message-editor.dynamicTemplate": [
+    "{type}{scope}{breaking_change_exclamation}: {description}",
+    "",
+    "{body}",
+    "",
+    "{breaking_change_footer}{footer}"
+  ],
+  "commit-message-editor.staticTemplate": ["label: emoji (scope) short-description", "", "body", "", "footer"],
+  "commit-message-editor.tokens": [
+    {
+      "combobox": true,
+      "description": "Type of changes.",
+      "label": "Type",
+      "name": "type",
+      "options": [
+        {
+          "description": "Implementation of new features.",
+          "label": "✨ feat (機能: 新規)",
+          "value": "✨ feat"
+        },
+        {
+          "description": "Repair of existing features.",
+          "label": "🎈 feat (機能: 更新)",
+          "value": "🎈 feat"
+        },
+        {
+          "description": "Deletion of features.",
+          "label": "🪦 feat (機能: 削除)",
+          "value": "🪦 feat"
+        },
+        {
+          "description": "Bug fixes.",
+          "label": "🐛 fix (修正)",
+          "value": "🐛 fix"
+        },
+        {
+          "description": "Critical bug fixes or major changes.",
+          "label": "🔥 hotfix (修正: 緊急)",
+          "value": "🔥 hotfix"
+        },
+        {
+          "description": "Documentation changes.",
+          "label": "📝 doc (ドキュメント)",
+          "value": "📝 doc"
+        },
+        {
+          "description": "Code Style Changes. (e.g. white-space, formatting, rename, typo, etc)",
+          "label": "💄 style (スタイル)",
+          "value": "💄 style"
+        },
+        {
+          "description": "Code Refactoring Changes.",
+          "label": "♻️ refactor (リファクタリング)",
+          "value": "♻️ refactor"
+        },
+        {
+          "description": "Performance Improvement for Changes.",
+          "label": "🏎️ perf (パフォーマンス)",
+          "value": "🏎️ perf"
+        },
+        {
+          "description": "Test cases changes.",
+          "label": "🧪 test (テスト)",
+          "value": "🧪 test"
+        },
+        {
+          "description": "Build system or dependency changes.(e.g. npm, lock file, etc)",
+          "label": "📦️ build (ビルド)",
+          "value": "📦️ build"
+        },
+        {
+          "description": "Continuous Integration Configuration File Changes.",
+          "label": "🦺 ci (継続的インテグレーション)",
+          "value": "🦺 ci"
+        },
+        {
+          "description": "Continuous Delivery Configuration File changes.",
+          "label": "🚀 cd (継続的デリバリー)",
+          "value": "🚀 cd"
+        },
+        {
+          "description": "Update dependencies.",
+          "label": "📦 dep (依存関係)",
+          "value": "📦 dep"
+        },
+        {
+          "description": "Other changes that don't modify src or test files.",
+          "label": "🔧 chore (雑務)",
+          "value": "🔧 chore"
+        },
+        {
+          "description": "Configuration changes.",
+          "label": "⚙️ chore (雑務: 設定)",
+          "value": "⚙️ chore"
+        },
+        {
+          "description": "Development script changes.",
+          "label": "🛠️ chore (雑務: スクリプト)",
+          "value": "🛠️ chore"
+        },
+        {
+          "description": "Removal of files or code.",
+          "label": "🗑 chore (雑務: 削除)",
+          "value": "🗑 chore"
+        },
+        {
+          "description": "Reversion of changes.",
+          "label": "⏪️ revert (取り消し)",
+          "value": "⏪️ revert"
+        },
+        {
+          "description": "The Dockerfile changes.",
+          "label": "🐳 container (コンテナ)",
+          "value": "🐳 container"
+        },
+        {
+          "description": "The docker-compose changes.",
+          "label": "🐙 compose (コンポーズ)",
+          "value": "🐙 compose"
+        },
+        {
+          "description": "Changes that will be squashed.",
+          "label": "🚧 wip (開発途中)",
+          "value": "🚧 wip"
+        },
+        {
+          "description": "The first commit.",
+          "label": "🎉 initial (ファーストコミット)",
+          "value": "🎉 initial"
+        }
+      ],
+      "type": "enum"
+    },
+    {
+      "default": false,
+      "description": "Indicates that this commit is a Breaking Change. (e.g. 'feat!: ...')",
+      "label": "Breaking Change (Exclamation)",
+      "name": "breaking_change_exclamation",
+      "type": "boolean",
+      "value": "!"
+    },
+    {
+      "description": "Scope of Changes. (e.g. api, mobile, web, etc)",
+      "label": "Scope",
+      "name": "scope",
+      "prefix": "(",
+      "suffix": ")",
+      "type": "text"
+    },
+    {
+      "description": "Commit summary.",
+      "label": "Short Description",
+      "name": "description",
+      "type": "text"
+    },
+    {
+      "description": "Detailed description of commit.",
+      "label": "Body",
+      "lines": 5,
+      "maxLines": 10,
+      "multiline": true,
+      "name": "body",
+      "type": "text"
+    },
+    {
+      "default": false,
+      "label": "Breaking Change (Footer)",
+      "name": "breaking_change_footer",
+      "type": "boolean",
+      "value": "BREAKING CHANGE: "
+    },
+    {
+      "description": "Description of disruptive changes or signature.",
+      "label": "Footer",
+      "multiline": true,
+      "name": "footer",
+      "type": "text"
+    }
+  ],
+  "commit-message-editor.view.defaultView": "form",
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "npm.packageManager": "bun",
+  "svg.preview.background": "transparent",
+  "tailwindCSS.experimental.classRegex": [
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["tv\\(([\\s\\S]*?)\\);", "[\"']([^\"']*).*?[\"']"],
+    ["twMerge\\(([\\s\\S]*?)\\);", "[\"']([^\"']*).*?[\"']"],
+    ["tv\\(([\\s\\S]*?)\\)", "[\"']([^\"']*).*?[\"']"],
+    ["twMerge\\(([\\s\\S]*?)\\)", "[\"']([^\"']*).*?[\"']"],
+    ["[A-Za-z_][A-Za-z0-9_]*ClassName\\s*[:=]\\s*{?[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["[A-Za-z_][A-Za-z0-9_]*ClassName\\s*[:=]\\s*{?`([^`]*).*?`", "[\"']([^\"']*).*?[\"']"]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  }
+}
