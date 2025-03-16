@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+  - tools/*
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - esbuild
+  - lefthook

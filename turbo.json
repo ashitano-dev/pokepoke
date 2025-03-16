@@ -1,0 +1,22 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": ["**/.env.*local"],
+  "tasks": {
+    "check": {},
+    "check:fix": {
+      "cache": false
+    },
+    "typecheck": {},
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.story.{tsx,jsx,mdx}"],
+      "outputs": [".next/**", "dist/**", "!.next/cache/**"]
+    },
+    "sb:build": {
+      "dependsOn": ["^sb:build"],
+      "outputs": ["apps/catalog/.storybook/static/**"]
+    },
+    "test": {}
+  }
+}
