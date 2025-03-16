@@ -1,0 +1,18 @@
+{
+  "name": "@pokepoke/postcss",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./postcss.config.js",
+  "scripts": {
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "pnpm run check --write"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
+    "postcss-import": "^16.1.0"
+  }
+}
