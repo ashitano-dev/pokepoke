@@ -1,0 +1,13 @@
+{
+  "name": "@pokepoke/backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./main.ts"
+  },
+  "dependencies": {
+    "elysia": "~1.2.25",
+    "@elysiajs/node": "~1.2.6"
+  }
+}
