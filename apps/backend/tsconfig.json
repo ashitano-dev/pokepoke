@@ -1,0 +1,5 @@
+{
+  "extends": "@pokepoke/tsconfig/elysiajs.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

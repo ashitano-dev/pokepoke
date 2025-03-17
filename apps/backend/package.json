@@ -1,0 +1,18 @@
+{
+  "name": "@pokepoke/backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx ./src/app/index.ts",
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "bun run check --write",
+    "build": "tsx build.ts",
+    "start": "node ./dist/index.mjs"
+  },
+  "dependencies": {
+    "elysia": "~1.2.25",
+    "@elysiajs/node": "~1.2.6",
+    "@pokepoke/tsconfig": "workspace:*"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@pokepoke/tsconfig",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@tsconfig/bun": "^1.0.7",
+    "@tsconfig/create-react-app": "^2.0.5",
+    "@tsconfig/next": "^2.0.3",
+    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/react-native": "^3.0.5",
+    "@tsconfig/strictest": "^2.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,22 @@
+pre-commit:
+  parallel: true
+  commands:
+    backend:
+      root: apps/backend/
+      glob: "*.{js,ts,jsx,tsx}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --config-path ./biome.json {staged_files}
+      stage_fixed: true
+
+    mobile:
+      root: apps/mobile/
+      glob: "*.{js,ts,jsx,tsx}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --config-path ./biome.json {staged_files}
+      stage_fixed: true
+
+    other:
+      glob: "*.{js,ts,jsx,tsx,json}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --config-path ./biome.json {staged_files}
+      stage_fixed: true
+      exclude:
+        - apps/backend/**/*.{js,ts,jsx,tsx}
+        - apps/mobile/**/*.{js,ts,jsx,tsx}
