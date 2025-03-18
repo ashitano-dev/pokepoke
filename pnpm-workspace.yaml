@@ -4,5 +4,8 @@ packages:
   - tools/*
 onlyBuiltDependencies:
   - '@biomejs/biome'
+  - '@swc/core'
   - esbuild
   - lefthook
+ignoredBuiltDependencies:
+  - supabase

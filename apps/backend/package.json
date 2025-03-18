@@ -8,11 +8,18 @@
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
     "check:fix": "bun run check --write",
     "build": "tsx build.ts",
-    "start": "node ./dist/index.mjs"
+    "start": "node ./dist/index.mjs",
+    "db:gen": "drizzle-kit generate",
+    "db:mig": "drizzle-kit migrate && supabase db diff -f pokepoke"
   },
   "dependencies": {
-    "elysia": "~1.2.25",
     "@elysiajs/node": "~1.2.6",
-    "@pokepoke/tsconfig": "workspace:*"
+    "@pokepoke/tsconfig": "workspace:*",
+    "drizzle-orm": "^0.40.0",
+    "elysia": "~1.2.25",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.5"
   }
 }
