@@ -1,8 +1,27 @@
 {
   "version": "0.2",
   "language": "en",
-  "dictionaries": ["typescript", "node", "html", "css", "scss", "json", "yaml", "markdown"],
-  "ignorePaths": ["node_modules/", "dist/", "build/", "coverage/", "out/", "public/", "tmp/", "temp/", ".*"],
+  "dictionaries": [
+    "typescript",
+    "node",
+    "html",
+    "css",
+    "scss",
+    "json",
+    "yaml",
+    "markdown"
+  ],
+  "ignorePaths": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    "coverage/",
+    "out/",
+    "public/",
+    "tmp/",
+    "temp/",
+    ".*"
+  ],
   "words": [
     "biomejs",
     "elysia",
@@ -11,6 +30,7 @@
     "nativewind",
     "pokepoke",
     "pressable",
+    "Refreshable",
     "signup",
     "supabase",
     "typebox",
