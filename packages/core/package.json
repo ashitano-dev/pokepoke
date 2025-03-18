@@ -1,0 +1,19 @@
+{
+  "name": "@pokepoke/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./assets/*": "./assets/*",
+    "./const": "./src/const/index.ts",
+    "./utils": "./src/utils/index.ts"
+  },
+  "scripts": {
+    "check": "biome check --error-on-warnings --no-errors-on-unmatched",
+    "check:fix": "pnpm run check --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@pokepoke/tsconfig": "workspace:*"
+  }
+}
