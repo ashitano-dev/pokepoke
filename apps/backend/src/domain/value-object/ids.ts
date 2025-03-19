@@ -17,3 +17,9 @@ export type OAuthProviderId = NewType<"OAuthProviderId", string>;
 export const newOAuthProviderId = (rawOAuthProviderId: string) => {
 	return rawOAuthProviderId as OAuthProviderId;
 };
+
+export type FriendInviteTokenId = NewType<"FriendInviteTokenId", string>;
+
+export const newFriendInviteTokenId = (rawFriendInviteToken: string) => {
+	return rawFriendInviteToken as FriendInviteTokenId;
+};
