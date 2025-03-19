@@ -1,5 +1,7 @@
 import type { User } from "../../../../domain/entities";
-import type { SessionId, UserId } from "../../../../domain/value-object";
+import type { FriendInviteTokenId, SessionId, UserId } from "../../../../domain/value-object";
+
+export type createFriendshipDto = { id: FriendInviteTokenId; userId: UserId; friendId: UserId };
 
 export interface IUserRepository {
 	// search for a user by id
@@ -16,4 +18,8 @@ export interface IUserRepository {
 
 	// delete a user
 	delete(id: UserId): Promise<void>;
+
+	findFriendsByUserId(userId: UserId): Promise<User[]>;
+
+	addFriend(dto: createFriendshipDto): Promise<void>;
 }
