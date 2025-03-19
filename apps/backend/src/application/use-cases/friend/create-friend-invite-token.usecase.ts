@@ -3,7 +3,7 @@ import { generateRandomString } from "../../../common/utils";
 import { createFriendInviteToken } from "../../../domain/entities";
 import { type UserId, newFriendInviteTokenId } from "../../../domain/value-object";
 import type { IFriendInviteTokenRepository } from "../../../interface-adapter/repositories/friend-invite-token";
-import type { ICreateFriendInviteTokenUseCase } from "./interfaces/create-friend-invite-token.interface";
+import type { ICreateFriendInviteTokenUseCase } from "./interfaces/create-friend-invite-token.usecase.interface";
 
 export class CreateFriendInviteTokenUseCase implements ICreateFriendInviteTokenUseCase {
 	constructor(private readonly friendInviteTokenRepository: IFriendInviteTokenRepository) {}

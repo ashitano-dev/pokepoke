@@ -4,7 +4,7 @@ import { type User, isExpiredFriendInviteToken } from "../../../domain/entities"
 import { newFriendInviteTokenId } from "../../../domain/value-object";
 import type { IFriendInviteTokenRepository } from "../../../interface-adapter/repositories/friend-invite-token";
 import type { IUserRepository } from "../../../interface-adapter/repositories/user";
-import type { ApplyFriendUseCaseResult, IApplyFriendUseCase } from "./interfaces/apply-friend.interface";
+import type { ApplyFriendUseCaseResult, IApplyFriendUseCase } from "./interfaces/apply-friend.usecase.interface";
 
 export class ApplyFriendUseCase implements IApplyFriendUseCase {
 	constructor(
