@@ -1,4 +1,4 @@
-import { eq, or } from "drizzle-orm";
+import { eq, or, sql } from "drizzle-orm";
 import type { User } from "../../../domain/entities";
 import { type SessionId, type UserId, newUserId } from "../../../domain/value-object";
 import type { DrizzleService } from "../../../infrastructure/drizzle";
@@ -82,22 +82,47 @@ export class UserRepository implements IUserRepository {
 	}
 
 	public async findFriendsByUserId(userId: UserId): Promise<User[]> {
-		const results = await this.drizzleService.db
-			.select()
+		// const results = await this.drizzleService.db
+		// 	.select()
+		// 	.from(this.drizzleService.schema.friendships)
+		// 	.innerJoin(
+		// 		this.drizzleService.schema.users,
+		// 		or(
+		// 			eq(this.drizzleService.schema.friendships.firstUserId, this.drizzleService.schema.users.id),
+		// 			eq(this.drizzleService.schema.friendships.secondUserId, this.drizzleService.schema.users.id),
+		// 		),
+		// 	)
+		// 	.where(
+		// 		and(
+		// 			or(
+		// 				eq(this.drizzleService.schema.friendships.firstUserId, userId),
+		// 				eq(this.drizzleService.schema.friendships.secondUserId, userId),
+		// 			),
+		// 			not(eq(this.drizzleService.schema.users.id, userId)),
+		// 		),
+		// 	);
+
+		const friendsQuery = this.drizzleService.db
+			.select({
+				friendId: sql<string>`
+        CASE 
+            WHEN ${this.drizzleService.schema.friendships.firstUserId} = ${userId} THEN ${this.drizzleService.schema.friendships.secondUserId} 
+            WHEN ${this.drizzleService.schema.friendships.secondUserId} = ${userId} THEN ${this.drizzleService.schema.friendships.firstUserId} 
+        END`.as("friendId"),
+			})
 			.from(this.drizzleService.schema.friendships)
-			.innerJoin(
-				this.drizzleService.schema.users,
-				or(
-					eq(this.drizzleService.schema.friendships.firstUserId, userId),
-					eq(this.drizzleService.schema.friendships.secondUserId, userId),
-				),
-			)
 			.where(
 				or(
 					eq(this.drizzleService.schema.friendships.firstUserId, userId),
 					eq(this.drizzleService.schema.friendships.secondUserId, userId),
 				),
-			);
+			)
+			.as("friends");
+
+		const results = await this.drizzleService.db
+			.select()
+			.from(friendsQuery)
+			.innerJoin(this.drizzleService.schema.users, eq(friendsQuery.friendId, this.drizzleService.schema.users.id));
 
 		return results.map(r => this.convertToUser(r.users));
 	}
