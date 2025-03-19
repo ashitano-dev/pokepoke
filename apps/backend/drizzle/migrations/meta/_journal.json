@@ -15,6 +15,13 @@
       "when": 1742320363476,
       "tag": "0001_known_phantom_reporter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1742371698130,
+      "tag": "0002_medical_grey_gargoyle",
+      "breakpoints": true
     }
   ]
 }
