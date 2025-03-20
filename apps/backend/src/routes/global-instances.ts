@@ -7,7 +7,12 @@ import {
 	GetUserFriendsUseCase,
 } from "../application/use-cases/friend";
 import { OAuthLoginCallbackUseCase, OAuthRequestUseCase } from "../application/use-cases/oauth";
-import { AddCardUseCase, GetCardImageUseCase, GetFriendPackUseCase } from "../application/use-cases/pack";
+import {
+	AddCardUseCase,
+	GetCardImageUseCase,
+	GetFriendPackUseCase,
+	PackCardCollectionUseCase,
+} from "../application/use-cases/pack";
 import {
 	GetAllFriendTradesUseCase,
 	GetTradeUseCase,
@@ -67,3 +72,4 @@ export const getTradeUseCase = new GetTradeUseCase(tradeRepository, userReposito
 export const getAllFriendTradesUseCase = new GetAllFriendTradesUseCase(tradeRepository, userRepository, packRepository);
 export const tradeRequestUseCase = new TradeRequestUseCase(tradeRepository, userRepository);
 export const tradeConfirmUseCase = new TradeConfirmUseCase(tradeRepository, userRepository, packRepository);
+export const packCardCollectionUseCase = new PackCardCollectionUseCase(packRepository, userRepository);
