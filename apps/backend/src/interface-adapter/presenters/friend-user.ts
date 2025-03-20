@@ -6,7 +6,7 @@ type FriendUserResponse = {
 	iconUrl: string | null;
 };
 
-export const friendUserPresenter = (friendUser: User): FriendUserResponse => {
+export const FriendUserPresenter = (friendUser: User): FriendUserResponse => {
 	return {
 		id: friendUser.id,
 		name: friendUser.name,

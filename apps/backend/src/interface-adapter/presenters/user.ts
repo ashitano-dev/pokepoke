@@ -10,7 +10,7 @@ type UserResponse = {
 	updatedAt: string;
 };
 
-export const userPresenter = (user: User): UserResponse => {
+export const UserPresenter = (user: User): UserResponse => {
 	return {
 		id: user.id,
 		name: user.name,
