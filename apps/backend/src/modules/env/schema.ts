@@ -10,6 +10,9 @@ export const PepperEnvSchema = t.Object({
 
 export const DatabaseEnvSchema = t.Object({
 	DATABASE_URL: t.String(),
+	SUPABASE_URL: t.String(),
+	SUPABASE_SERVICE_ROLE_KEY: t.String(),
+	SUPABASE_ANON_KEY: t.String(),
 });
 
 export const OAuthProviderEnvSchema = t.Object({
