@@ -7,13 +7,15 @@ export {
 	newPackId,
 	newFriendshipId,
 	newTradeId,
-	newTradCardId,
+	newTradeCardId,
 } from "./ids";
 export {
 	newOAuthProvider,
 	oauthProviderSchema,
 } from "./oauth-provider";
+export { newTradeStatus } from "./status";
 
+export type { TradeStatus } from "./status";
 export type {
 	UserId,
 	SessionId,
@@ -23,6 +25,6 @@ export type {
 	PackId,
 	FriendshipId,
 	TradeId,
-	TradCardId,
+	TradeCardId,
 } from "./ids";
 export type { OAuthProvider } from "./oauth-provider";

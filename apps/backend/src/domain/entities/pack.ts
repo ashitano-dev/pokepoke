@@ -1,11 +1,11 @@
-import type { PackId, UserId } from "../value-object";
+import type { FriendshipId, PackId, UserId } from "../value-object";
 import type { Card } from "./card";
 
 export interface Pack {
 	id: PackId;
 	title: string;
-	createUserId: UserId; // パックを作成したユーザー
-	targetUserId: UserId; // パックの対象ユーザー
+	ownerId: UserId;
+	friendshipId: FriendshipId;
 	cards: Card[];
 	createdAt: Date;
 	updatedAt: Date;
@@ -14,8 +14,8 @@ export interface Pack {
 export const createPack = (arg: {
 	id: PackId;
 	title: string;
-	createUserId: UserId;
-	targetUserId: UserId;
+	ownerId: UserId;
+	friendshipId: FriendshipId;
 	cards: Card[];
 }): Pack => {
 	const now = new Date();
@@ -23,8 +23,8 @@ export const createPack = (arg: {
 	return {
 		id: arg.id,
 		title: arg.title,
-		createUserId: arg.createUserId,
-		targetUserId: arg.targetUserId,
+		ownerId: arg.ownerId,
+		friendshipId: arg.friendshipId,
 		cards: arg.cards,
 		createdAt: now,
 		updatedAt: now,
