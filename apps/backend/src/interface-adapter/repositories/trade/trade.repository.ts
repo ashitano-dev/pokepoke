@@ -1,15 +1,24 @@
-import { and, eq, isNull, or } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import type { Card, Trade } from "../../../domain/entities";
-import { type TradeId, type UserId, newCardId, newPackId, newTradeId, newUserId } from "../../../domain/value-object";
+import {
+	type FriendshipId,
+	type TradeId,
+	type UserId,
+	newCardId,
+	newFriendshipId,
+	newPackId,
+	newTradeId,
+	newTradeStatus,
+	newUserId,
+} from "../../../domain/value-object";
 import type { DrizzleService } from "../../../infrastructure/drizzle";
 import type { CreateTradeCardsDto, ITradeRepository } from "./interfaces/trade.repository.interface";
 
 interface FoundTradeDto {
 	id: string;
+	friendshipId: string;
 	requestUserId: string;
-	requestUserCreatedPackId: string | null;
-	confirmUserId: string | null;
-	confirmUserCreatedPackId: string | null;
+	status: "PENDING" | "CONFIRMED";
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -43,22 +52,11 @@ export class TradeRepository implements ITradeRepository {
 		return trades.length === 0 ? null : this.convertToTrade(trades[0]!);
 	}
 
-	public async findManyByUserIdAndFriendUserId(userId: UserId, friendUserId: UserId): Promise<Trade[]> {
+	public async findManyByFriendshipId(friendshipId: FriendshipId): Promise<Trade[]> {
 		const trades = await this.drizzleService.db
 			.select()
 			.from(this.drizzleService.schema.trades)
-			.where(
-				or(
-					and(
-						eq(this.drizzleService.schema.trades.requestUserId, userId),
-						eq(this.drizzleService.schema.trades.confirmUserId, friendUserId),
-					),
-					and(
-						eq(this.drizzleService.schema.trades.requestUserId, friendUserId),
-						eq(this.drizzleService.schema.trades.confirmUserId, userId),
-					),
-				),
-			);
+			.where(eq(this.drizzleService.schema.trades.friendshipId, friendshipId));
 
 		return trades.map(this.convertToTrade);
 	}
@@ -68,19 +66,16 @@ export class TradeRepository implements ITradeRepository {
 			.insert(this.drizzleService.schema.trades)
 			.values({
 				id: trade.id,
+				friendshipId: trade.friendshipId,
 				requestUserId: trade.requestUserId,
-				requestUserCreatedPackId: trade.requestUserCreatedPackId,
-				confirmUserId: trade.confirmUserId,
-				confirmUserCreatedPackId: trade.confirmUserCreatedPackId,
+				status: trade.status,
 				createdAt: trade.createdAt,
 				updatedAt: trade.updatedAt,
 			})
 			.onConflictDoUpdate({
 				target: [this.drizzleService.schema.trades.id],
 				set: {
-					requestUserCreatedPackId: trade.requestUserCreatedPackId,
-					confirmUserId: trade.confirmUserId,
-					confirmUserCreatedPackId: trade.confirmUserCreatedPackId,
+					status: trade.status,
 					updatedAt: trade.updatedAt,
 				},
 			});
@@ -114,13 +109,17 @@ export class TradeRepository implements ITradeRepository {
 		await this.drizzleService.db.insert(this.drizzleService.schema.tradesCards).values(tradeCardDtoList);
 	}
 
-	public async deleteUnconfirmedTradeByRequestUserId(requestUserId: UserId): Promise<void> {
+	public async deletePendingTradeByRequestUserIdAndFriendshipId(
+		requestUserId: UserId,
+		friendshipId: FriendshipId,
+	): Promise<void> {
 		await this.drizzleService.db
 			.delete(this.drizzleService.schema.trades)
 			.where(
 				and(
 					eq(this.drizzleService.schema.trades.requestUserId, requestUserId),
-					isNull(this.drizzleService.schema.trades.confirmUserId),
+					eq(this.drizzleService.schema.trades.friendshipId, friendshipId),
+					eq(this.drizzleService.schema.trades.status, newTradeStatus("PENDING")),
 				),
 			);
 	}
@@ -143,10 +142,9 @@ export class TradeRepository implements ITradeRepository {
 	private convertToTrade(tradeDto: FoundTradeDto): Trade {
 		return {
 			id: newTradeId(tradeDto.id),
+			friendshipId: newFriendshipId(tradeDto.friendshipId),
 			requestUserId: newUserId(tradeDto.requestUserId),
-			requestUserCreatedPackId: tradeDto.requestUserCreatedPackId ? newPackId(tradeDto.requestUserCreatedPackId) : null,
-			confirmUserId: tradeDto.confirmUserId ? newUserId(tradeDto.confirmUserId) : null,
-			confirmUserCreatedPackId: tradeDto.confirmUserCreatedPackId ? newPackId(tradeDto.confirmUserCreatedPackId) : null,
+			status: newTradeStatus(tradeDto.status),
 			createdAt: tradeDto.createdAt,
 			updatedAt: tradeDto.updatedAt,
 		};

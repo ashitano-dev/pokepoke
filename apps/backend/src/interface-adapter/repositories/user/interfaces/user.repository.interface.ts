@@ -1,7 +1,7 @@
 import type { User } from "../../../../domain/entities";
 import type { FriendshipId, SessionId, UserId } from "../../../../domain/value-object";
 
-export type createFriendshipDto = { id: FriendshipId; userId: UserId; friendId: UserId };
+export type createFriendshipDto = { id: FriendshipId; user1: UserId; user2: UserId };
 
 export interface IUserRepository {
 	// search for a user by id
@@ -19,7 +19,12 @@ export interface IUserRepository {
 	// delete a user
 	delete(id: UserId): Promise<void>;
 
-	findFriendShipByUserIdAndFriendId(userId: UserId, friendId: UserId): Promise<boolean>;
+	findFriendshipByUserIds(
+		user1: UserId,
+		user2: UserId,
+	): Promise<{
+		id: FriendshipId;
+	} | null>;
 
 	findFriendsByUserId(userId: UserId): Promise<User[]>;
 

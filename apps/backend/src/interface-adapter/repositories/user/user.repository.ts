@@ -1,6 +1,12 @@
 import { and, eq, or, sql } from "drizzle-orm";
 import type { User } from "../../../domain/entities";
-import { type SessionId, type UserId, newUserId } from "../../../domain/value-object";
+import {
+	type FriendshipId,
+	type SessionId,
+	type UserId,
+	newFriendshipId,
+	newUserId,
+} from "../../../domain/value-object";
 import type { DrizzleService } from "../../../infrastructure/drizzle";
 import type { IUserRepository, createFriendshipDto } from "./interfaces/user.repository.interface";
 
@@ -81,20 +87,26 @@ export class UserRepository implements IUserRepository {
 			.where(eq(this.drizzleService.schema.users.id, id));
 	}
 
-	public async findFriendShipByUserIdAndFriendId(userId: UserId, friendId: UserId): Promise<boolean> {
+	public async findFriendshipByUserIds(
+		_user1: UserId,
+		_user2: UserId,
+	): Promise<{
+		id: FriendshipId;
+	} | null> {
+		let user1 = _user1;
+		let user2 = _user2;
+
+		if (user1 > user2) {
+			[user1, user2] = [user2, user1];
+		}
+
 		const friendship = await this.drizzleService.db
 			.select()
 			.from(this.drizzleService.schema.friendships)
 			.where(
-				or(
-					and(
-						eq(this.drizzleService.schema.friendships.firstUserId, userId),
-						eq(this.drizzleService.schema.friendships.secondUserId, friendId),
-					),
-					and(
-						eq(this.drizzleService.schema.friendships.firstUserId, friendId),
-						eq(this.drizzleService.schema.friendships.secondUserId, userId),
-					),
+				and(
+					eq(this.drizzleService.schema.friendships.userId1, user1),
+					eq(this.drizzleService.schema.friendships.userId2, user2),
 				),
 			);
 
@@ -102,7 +114,7 @@ export class UserRepository implements IUserRepository {
 			throw new Error("Multiple friendships found for the same user and friend");
 		}
 
-		return friendship.length === 1;
+		return friendship.length === 1 ? { id: newFriendshipId(friendship[0]!.id) } : null;
 	}
 
 	public async findFriendsByUserId(userId: UserId): Promise<User[]> {
@@ -130,15 +142,15 @@ export class UserRepository implements IUserRepository {
 			.select({
 				friendId: sql<string>`
         CASE 
-            WHEN ${this.drizzleService.schema.friendships.firstUserId} = ${userId} THEN ${this.drizzleService.schema.friendships.secondUserId} 
-            WHEN ${this.drizzleService.schema.friendships.secondUserId} = ${userId} THEN ${this.drizzleService.schema.friendships.firstUserId} 
+            WHEN ${this.drizzleService.schema.friendships.userId1} = ${userId} THEN ${this.drizzleService.schema.friendships.userId2} 
+            WHEN ${this.drizzleService.schema.friendships.userId2} = ${userId} THEN ${this.drizzleService.schema.friendships.userId1} 
         END`.as("friendId"),
 			})
 			.from(this.drizzleService.schema.friendships)
 			.where(
 				or(
-					eq(this.drizzleService.schema.friendships.firstUserId, userId),
-					eq(this.drizzleService.schema.friendships.secondUserId, userId),
+					eq(this.drizzleService.schema.friendships.userId1, userId),
+					eq(this.drizzleService.schema.friendships.userId2, userId),
 				),
 			)
 			.as("friends");
@@ -152,9 +164,15 @@ export class UserRepository implements IUserRepository {
 	}
 
 	public async addFriend(dto: createFriendshipDto): Promise<void> {
-		await this.drizzleService.db
-			.insert(this.drizzleService.schema.friendships)
-			.values({ id: dto.id, firstUserId: dto.userId, secondUserId: dto.friendId });
+		let { user1, user2 } = dto;
+		if (user1 > user2) {
+			[user1, user2] = [user2, user1];
+		}
+		await this.drizzleService.db.insert(this.drizzleService.schema.friendships).values({
+			id: dto.id,
+			userId1: user1,
+			userId2: user2,
+		});
 	}
 
 	private convertToUser(dto: FoundUserDto): User {

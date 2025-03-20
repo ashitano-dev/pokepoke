@@ -1,13 +1,13 @@
 import type { Pack } from "../../../../domain/entities";
 import type { Card } from "../../../../domain/entities";
-import type { CardId, UserId } from "../../../../domain/value-object";
+import type { CardId, FriendshipId, UserId } from "../../../../domain/value-object";
 
 export interface CreateCardDto extends Omit<Card, "packId"> {}
 
 export interface IPackRepository {
 	save(pack: Pack): Promise<void>;
-	findByCreateUserIdAndTargetUserId(createUserId: UserId, targetUserId: UserId): Promise<Pack | null>;
+	findByOwnerIdAndFriendshipId(ownerUserId: UserId, friendshipId: FriendshipId): Promise<Pack | null>;
 
 	findCardById(cardId: CardId): Promise<Card | null>;
-	addCardByCreateUserIdAndTargetUserId(createUserId: UserId, targetUserId: UserId, card: CreateCardDto): Promise<void>;
+	addCardByOwnerIdAndFriendshipId(ownerUserId: UserId, friendshipId: FriendshipId, card: CreateCardDto): Promise<void>;
 }
