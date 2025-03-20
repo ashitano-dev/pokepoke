@@ -5,3 +5,5 @@ export { friendInviteTokens } from "./friend-invite-tokens";
 export { friendships } from "./friendships";
 export { packs } from "./packs";
 export { cards } from "./cards";
+export { trades } from "./trades";
+export { tradesCards } from "./trades-cards";
