@@ -1,5 +1,4 @@
 import { exit } from "node:process";
-import { ulid } from "ulid";
 import { SessionTokenService } from "../src/application/services/session-token";
 import { createOAuthAccount, createSession, createUser } from "../src/domain/entities";
 import { newOAuthProvider, newOAuthProviderId, newSessionId, newUserId } from "../src/domain/value-object";
@@ -10,80 +9,102 @@ const drizzleService = new DrizzleService(ENV.DATABASE_URL);
 
 const sessionTokenService = new SessionTokenService(ENV.SESSION_PEPPER);
 
-const user = createUser({
-	id: newUserId("1"),
-	name: "foo",
-	email: "foo@example.com",
+// === Seed User ===
+const seedUserId = newUserId("01JPTAGKFDB3206TW5TJC5DVP4");
+
+const seedUser = createUser({
+	id: seedUserId,
+	name: "seed",
+	email: "seed@example.com",
 	emailVerified: true,
 	iconUrl: null,
 });
 
-const oauthAccount = createOAuthAccount({
-	userId: user.id,
+const seedOAuthAccount = createOAuthAccount({
+	userId: seedUser.id,
 	provider: newOAuthProvider("discord"),
 	providerId: newOAuthProviderId("1234567890"),
 });
 
-const sessionToken = "dummy-session-token";
-const sessionId = newSessionId(sessionTokenService.hashSessionToken(sessionToken));
+const seedSessionToken = "dummy-seed-session-token";
+const seedSessionId = newSessionId(sessionTokenService.hashSessionToken(seedSessionToken));
 
-const session = createSession({
-	id: sessionId,
-	userId: user.id,
+const seedSession = createSession({
+	id: seedSessionId,
+	userId: seedUser.id,
 });
 
-const myUserId = "01JPNB963G26R7Q9QTCC80ZB07";
+await drizzleService.db.insert(drizzleService.schema.users).values(seedUser).onConflictDoNothing();
 
-// biome-ignore lint/suspicious/noConsoleLog: <explanation>
-console.log("Seeding...");
-
-await drizzleService.db
-	.insert(drizzleService.schema.users)
-	.values(user)
-	.onConflictDoUpdate({
-		target: drizzleService.schema.users.id,
-		set: {
-			email: user.email,
-			emailVerified: user.emailVerified,
-			name: user.name,
-			iconUrl: user.iconUrl,
-			updatedAt: user.updatedAt,
-		},
-	});
-
-await drizzleService.db
-	.insert(drizzleService.schema.oauthAccounts)
-	.values(oauthAccount)
-	.onConflictDoUpdate({
-		target: [drizzleService.schema.oauthAccounts.userId, drizzleService.schema.oauthAccounts.provider],
-		set: {
-			providerId: oauthAccount.providerId,
-			updatedAt: oauthAccount.updatedAt,
-		},
-	});
+await drizzleService.db.insert(drizzleService.schema.oauthAccounts).values(seedOAuthAccount).onConflictDoNothing();
 
 await drizzleService.db
 	.insert(drizzleService.schema.sessions)
-	.values(session)
+	.values(seedSession)
 	.onConflictDoUpdate({
 		target: drizzleService.schema.sessions.id,
 		set: {
-			expiresAt: session.expiresAt,
+			expiresAt: seedSession.expiresAt,
 		},
 	});
 
+// === My User ===
+const myUserId = newUserId("01JPNB963G26R7Q9QTCC80ZB07");
+
+const myUser = createUser({
+	id: myUserId,
+	name: "bar",
+	email: "iMyMeMine@example.com",
+	emailVerified: true,
+	iconUrl: null,
+});
+
+const myOAuthAccount = createOAuthAccount({
+	userId: myUser.id,
+	provider: newOAuthProvider("discord"),
+	providerId: newOAuthProviderId("0987654321"),
+});
+
+const mySessionToken = "dummy-my-session-token";
+const mySessionId = newSessionId(sessionTokenService.hashSessionToken(mySessionToken));
+
+const mySession = createSession({
+	id: mySessionId,
+	userId: myUser.id,
+});
+
+await drizzleService.db.insert(drizzleService.schema.users).values(myUser).onConflictDoNothing();
+
+await drizzleService.db.insert(drizzleService.schema.oauthAccounts).values(myOAuthAccount).onConflictDoNothing();
+
+await drizzleService.db
+	.insert(drizzleService.schema.sessions)
+	.values(mySession)
+	.onConflictDoUpdate({
+		target: drizzleService.schema.sessions.id,
+		set: {
+			expiresAt: mySession.expiresAt,
+		},
+	});
+
+// === Friendship ===
+
+const friendshipId = "01JPTATRE01MCD87GG6B3JT6QN";
+
 await drizzleService.db
 	.insert(drizzleService.schema.friendships)
-	.values({ id: "friendship", firstUserId: user.id, secondUserId: myUserId })
+	.values({ id: friendshipId, userId1: myUser.id, userId2: seedUser.id })
 	.onConflictDoNothing();
+
+// === Packs ===
 
 await drizzleService.db
 	.insert(drizzleService.schema.packs)
 	.values({
-		id: ulid(),
-		title: "koutyuke",
-		createUserId: user.id,
-		targetUserId: myUserId,
+		id: "01JPTATRE846M3XN914J9RREFY",
+		title: "seed",
+		ownerId: myUserId,
+		friendshipId: friendshipId,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	})
@@ -92,10 +113,10 @@ await drizzleService.db
 await drizzleService.db
 	.insert(drizzleService.schema.packs)
 	.values({
-		id: ulid(),
-		title: "fooo",
-		createUserId: myUserId,
-		targetUserId: user.id,
+		id: "01JPTATRE8Y9D9Q1WXD130SWT2",
+		title: "my",
+		ownerId: seedUserId,
+		friendshipId: friendshipId,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	})

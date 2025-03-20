@@ -43,6 +43,13 @@
       "when": 1742470836187,
       "tag": "0005_worthless_daredevil",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1742492530493,
+      "tag": "0006_smart_patriot",
+      "breakpoints": true
     }
   ]
 }
