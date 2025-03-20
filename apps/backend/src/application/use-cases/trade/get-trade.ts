@@ -12,26 +12,22 @@ export class GetTradeUseCase implements IGetTradeUseCase {
 		private readonly packRepository: IPackRepository,
 	) {}
 
-	public async execute(tradeId: TradeId, userId: UserId): Promise<GetTradeUseCaseResult> {
-		const trade = await this.tradeRepository.findById(tradeId);
+	public async execute(tradeId: TradeId, userId: UserId, friendUserId: UserId): Promise<GetTradeUseCaseResult> {
+		const [trade, friendship] = await Promise.all([
+			this.tradeRepository.findById(tradeId),
+			this.userRepository.findFriendshipByUserIds(userId, friendUserId),
+		]);
+
+		if (!friendship) {
+			return err("NOT_FRIEND");
+		}
 
 		if (!trade) {
 			return err("TRADE_NOT_FOUND");
 		}
 
-		if (
-			trade.confirmUserCreatedPackId === null ||
-			trade.requestUserCreatedPackId === null ||
-			trade.confirmUserId === null
-		) {
-			return err("PACK_NOT_FOUND");
-		}
-
-		const friendUserId = trade.requestUserId === userId ? trade.confirmUserId : trade.requestUserId;
-
-		const [friendUser, pack, cards] = await Promise.all([
-			this.userRepository.findById(friendUserId),
-			this.packRepository.findByCreateUserIdAndTargetUserId(friendUserId, userId),
+		const [pack, cards] = await Promise.all([
+			this.packRepository.findByOwnerIdAndFriendshipId(friendUserId, friendship.id),
 			this.tradeRepository.findCardsByTradeIdAndUserId(tradeId, userId),
 		]);
 
@@ -39,12 +35,7 @@ export class GetTradeUseCase implements IGetTradeUseCase {
 			return err("PACK_NOT_FOUND");
 		}
 
-		if (!friendUser) {
-			return err("FRIEND_USER_NOT_FOUND");
-		}
-
 		return {
-			friendUser,
 			trade,
 			pack,
 			cards,

@@ -1,9 +1,8 @@
 import type { Err, Result } from "../../../../common/utils";
-import type { Card, Pack, Trade, User } from "../../../../domain/entities";
+import type { Card, Pack, Trade } from "../../../../domain/entities";
 import type { TradeId, UserId } from "../../../../domain/value-object";
 
 export type TradeConfirmUseCaseSuccessResult = {
-	friendUser: User;
 	trade: Trade;
 	pack: Pack;
 	cards: Card[];
@@ -23,5 +22,5 @@ export type TradeConfirmUseCaseErrorResult = Err<
 export type TradeConfirmUseCaseResult = Result<TradeConfirmUseCaseSuccessResult, TradeConfirmUseCaseErrorResult>;
 
 export interface ITradeConfirmUseCase {
-	execute(tradeId: TradeId, userId: UserId): Promise<TradeConfirmUseCaseResult>;
+	execute(tradeId: TradeId, confirmUserId: UserId, requestUserId: UserId): Promise<TradeConfirmUseCaseResult>;
 }
