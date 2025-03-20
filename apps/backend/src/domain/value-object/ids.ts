@@ -23,3 +23,21 @@ export type FriendInviteTokenId = NewType<"FriendInviteTokenId", string>;
 export const newFriendInviteTokenId = (rawFriendInviteToken: string) => {
 	return rawFriendInviteToken as FriendInviteTokenId;
 };
+
+export type FriendshipId = NewType<"FriendshipId", string>;
+
+export const newFriendshipId = (rawFriendshipId: string) => {
+	return rawFriendshipId as FriendshipId;
+};
+
+export type CardId = NewType<"CardId", string>;
+
+export const newCardId = (rawCardId: string) => {
+	return rawCardId as CardId;
+};
+
+export type PackId = NewType<"PackId", string>;
+
+export const newPackId = (rawPackId: string) => {
+	return rawPackId as PackId;
+};
