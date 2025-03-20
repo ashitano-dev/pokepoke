@@ -1,4 +1,4 @@
-import { eq, or, sql } from "drizzle-orm";
+import { and, eq, or, sql } from "drizzle-orm";
 import type { User } from "../../../domain/entities";
 import { type SessionId, type UserId, newUserId } from "../../../domain/value-object";
 import type { DrizzleService } from "../../../infrastructure/drizzle";
@@ -79,6 +79,30 @@ export class UserRepository implements IUserRepository {
 		await this.drizzleService.db
 			.delete(this.drizzleService.schema.users)
 			.where(eq(this.drizzleService.schema.users.id, id));
+	}
+
+	public async findFriendShipByUserIdAndFriendId(userId: UserId, friendId: UserId): Promise<boolean> {
+		const friendship = await this.drizzleService.db
+			.select()
+			.from(this.drizzleService.schema.friendships)
+			.where(
+				or(
+					and(
+						eq(this.drizzleService.schema.friendships.firstUserId, userId),
+						eq(this.drizzleService.schema.friendships.secondUserId, friendId),
+					),
+					and(
+						eq(this.drizzleService.schema.friendships.firstUserId, friendId),
+						eq(this.drizzleService.schema.friendships.secondUserId, userId),
+					),
+				),
+			);
+
+		if (friendship.length > 1) {
+			throw new Error("Multiple friendships found for the same user and friend");
+		}
+
+		return friendship.length === 1;
 	}
 
 	public async findFriendsByUserId(userId: UserId): Promise<User[]> {
