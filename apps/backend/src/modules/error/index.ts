@@ -5,6 +5,7 @@ export {
 	BadRequestException,
 	UnauthorizedException,
 	ForbiddenException,
+	NotFoundException,
 	MethodNotAllowedException,
 	ConflictException,
 	ImATeapotException,
