@@ -77,12 +77,8 @@
           "name": "cards_pack_id_packs_id_fk",
           "tableFrom": "cards",
           "tableTo": "packs",
-          "columnsFrom": [
-            "pack_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["pack_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -135,12 +131,8 @@
           "name": "friend_invite_tokens_user_id_users_id_fk",
           "tableFrom": "friend_invite_tokens",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -150,9 +142,7 @@
         "unq_friend_invite_tokens__token": {
           "name": "unq_friend_invite_tokens__token",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -188,12 +178,8 @@
           "name": "friendships_user_id_1_users_id_fk",
           "tableFrom": "friendships",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id_1"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id_1"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -201,12 +187,8 @@
           "name": "friendships_user_id_2_users_id_fk",
           "tableFrom": "friendships",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id_2"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id_2"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -216,10 +198,7 @@
         "unq_friendship__user_id1_user_id2": {
           "name": "unq_friendship__user_id1_user_id2",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id_1",
-            "user_id_2"
-          ]
+          "columns": ["user_id_1", "user_id_2"]
         }
       },
       "policies": {},
@@ -290,12 +269,8 @@
           "name": "oauth_accounts_user_id_users_id_fk",
           "tableFrom": "oauth_accounts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -305,25 +280,17 @@
         "oauth_accounts_provider_id_unique": {
           "name": "oauth_accounts_provider_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "provider_id"
-          ]
+          "columns": ["provider_id"]
         },
         "idx_oauth_accounts__provider_provider_id": {
           "name": "idx_oauth_accounts__provider_provider_id",
           "nullsNotDistinct": false,
-          "columns": [
-            "provider",
-            "provider_id"
-          ]
+          "columns": ["provider", "provider_id"]
         },
         "unq_oauth_accounts__provider_user": {
           "name": "unq_oauth_accounts__provider_user",
           "nullsNotDistinct": false,
-          "columns": [
-            "provider",
-            "user_id"
-          ]
+          "columns": ["provider", "user_id"]
         }
       },
       "policies": {},
@@ -379,12 +346,8 @@
           "name": "packs_owner_id_users_id_fk",
           "tableFrom": "packs",
           "tableTo": "users",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -392,12 +355,8 @@
           "name": "packs_friendship_id_friendships_id_fk",
           "tableFrom": "packs",
           "tableTo": "friendships",
-          "columnsFrom": [
-            "friendship_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friendship_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -453,12 +412,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -518,12 +473,8 @@
           "name": "trades_cards_trade_id_trades_id_fk",
           "tableFrom": "trades_cards",
           "tableTo": "trades",
-          "columnsFrom": [
-            "trade_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["trade_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -531,12 +482,8 @@
           "name": "trades_cards_user_id_users_id_fk",
           "tableFrom": "trades_cards",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -544,12 +491,8 @@
           "name": "trades_cards_card_id_cards_id_fk",
           "tableFrom": "trades_cards",
           "tableTo": "cards",
-          "columnsFrom": [
-            "card_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["card_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -610,12 +553,8 @@
           "name": "trades_friendship_id_friendships_id_fk",
           "tableFrom": "trades",
           "tableTo": "friendships",
-          "columnsFrom": [
-            "friendship_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["friendship_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -699,9 +638,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
