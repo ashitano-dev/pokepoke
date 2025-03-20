@@ -1,30 +1,17 @@
-import { index, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
-import { packs } from "./packs";
-import { users } from "./users";
+import { pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import { friendships } from "./friendships";
 
-export const trades = pgTable(
-	"trades",
-	{
-		id: varchar("id").primaryKey().notNull(),
-		requestUserId: varchar("request_user_id")
-			.notNull()
-			.references(() => users.id, {
-				onDelete: "cascade",
-			}),
-		requestUserCreatedPackId: varchar("request_user_created_pack_id").references(() => packs.id, {
+export const trades = pgTable("trades", {
+	id: varchar("id").primaryKey().notNull(),
+	friendshipId: varchar("friendship_id")
+		.notNull()
+		.references(() => friendships.id, {
 			onDelete: "cascade",
 		}),
-		confirmUserId: varchar("confirm_user_id").references(() => users.id, {
-			onDelete: "cascade",
-		}),
-		confirmUserCreatedPackId: varchar("confirm_user_created_pack_id").references(() => packs.id, {
-			onDelete: "cascade",
-		}),
-		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at").notNull().defaultNow(),
-	},
-	table => [
-		index("idx_trades__request_user_id").on(table.requestUserId),
-		index("idx_trades__confirm_user_id").on(table.confirmUserId),
-	],
-);
+	requestUserId: varchar("requester_user_id").notNull(),
+	status: varchar("status", { enum: ["PENDING", "CONFIRMED"] })
+		.notNull()
+		.default("PENDING"),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
