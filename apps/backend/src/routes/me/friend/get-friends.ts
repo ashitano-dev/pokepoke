@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { friendUserPresenter } from "../../../interface-adapter/presenters";
+import { FriendUserPresenter } from "../../../interface-adapter/presenters";
 import { authGuard } from "../../../modules/auth-guard";
 import { getUserFriendsUseCase } from "../../global-instances";
 
@@ -9,7 +9,7 @@ export const GetFriendsRouter = new Elysia().use(authGuard()).get(
 		const result = await getUserFriendsUseCase.execute(user.id);
 
 		return {
-			friends: result.friends.map(friendUserPresenter),
+			friends: result.friends.map(FriendUserPresenter),
 		};
 	},
 	{

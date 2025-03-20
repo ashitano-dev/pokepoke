@@ -7,10 +7,14 @@ import {
 	GetUserFriendsUseCase,
 } from "../application/use-cases/friend";
 import { OAuthLoginCallbackUseCase, OAuthRequestUseCase } from "../application/use-cases/oauth";
+import { AddCardUseCase, GetCardImageUseCase, GetFriendPackUseCase } from "../application/use-cases/pack";
 import { DrizzleService } from "../infrastructure/drizzle";
+import { SupabaseService } from "../infrastructure/supabase";
 import { OAuthProviderGateway } from "../interface-adapter/gateway/oauth-provider";
 import { FriendInviteTokenRepository } from "../interface-adapter/repositories/friend-invite-token";
+import { ImageRepository } from "../interface-adapter/repositories/image";
 import { OAuthAccountRepository } from "../interface-adapter/repositories/oauth-account";
+import { PackRepository } from "../interface-adapter/repositories/pack";
 import { SessionRepository } from "../interface-adapter/repositories/session";
 import { UserRepository } from "../interface-adapter/repositories/user";
 import { ENV } from "../modules/env";
@@ -21,6 +25,7 @@ export const mobileBaseUrl = getMobileBaseScheme();
 
 // DB
 const drizzleService = new DrizzleService(ENV.DATABASE_URL);
+const supabaseService = new SupabaseService();
 
 // Services
 const sessionTokenService = new SessionTokenService(ENV.SESSION_PEPPER);
@@ -30,6 +35,8 @@ const sessionRepository = new SessionRepository(drizzleService);
 const userRepository = new UserRepository(drizzleService);
 const oauthAccountRepository = new OAuthAccountRepository(drizzleService);
 const friendInviteTokenRepository = new FriendInviteTokenRepository(drizzleService);
+const packRepository = new PackRepository(drizzleService);
+const imageRepository = new ImageRepository(supabaseService);
 
 // UseCases
 export const logoutUseCase = new LogoutUseCase(sessionRepository, sessionTokenService);
@@ -42,6 +49,9 @@ export const oauthLoginCallbackUseCase = new OAuthLoginCallbackUseCase(
 	userRepository,
 );
 
-export const applyFriendUseCase = new ApplyFriendUseCase(friendInviteTokenRepository, userRepository);
+export const applyFriendUseCase = new ApplyFriendUseCase(friendInviteTokenRepository, userRepository, packRepository);
 export const createFriendInviteTokenUseCase = new CreateFriendInviteTokenUseCase(friendInviteTokenRepository);
 export const getUserFriendsUseCase = new GetUserFriendsUseCase(userRepository);
+export const addCardUseCase = new AddCardUseCase(imageRepository, packRepository);
+export const getCardImageUseCase = new GetCardImageUseCase(imageRepository, packRepository);
+export const getFriendPackUseCase = new GetFriendPackUseCase(packRepository);
