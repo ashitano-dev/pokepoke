@@ -1,10 +1,9 @@
-import type { Card, Pack, Trade, User } from "../../domain/entities";
-import { FriendUserPresenter } from "./friend-user";
+import type { Card, Pack, Trade } from "../../domain/entities";
 
-export const TradePresenter = (friendUser: User, trade: Trade, pack: Pack, cards: Card[]) => {
+export const TradePresenter = (trade: Trade, pack: Pack, cards: Card[]) => {
 	return {
 		id: trade.id,
-		friendUser: FriendUserPresenter(friendUser),
+		status: trade.status,
 		pack: {
 			id: pack.id,
 			title: pack.title,
@@ -40,6 +39,7 @@ export const TradeListPresenter = (
 		},
 		trades: trades.map(({ trade, cards }) => ({
 			id: trade.id,
+			status: trade.status,
 			cards: cards.map(card => ({
 				id: card.id,
 				title: card.title,
