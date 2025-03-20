@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
 import { isErr } from "../../common/utils";
 import { newTradeId } from "../../domain/value-object";
-import { TradePresenter } from "../../interface-adapter/presenters/trade";
+import { TradePresenter } from "../../interface-adapter/presenters";
 import { authGuard } from "../../modules/auth-guard";
 import { BadRequestException, InternalServerErrorException } from "../../modules/error";
 import { getTradeUseCase } from "../global-instances";
