@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "dev": "tsx watch --env-file=.env.local ./src/server.ts",
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
@@ -20,6 +22,7 @@
     "@oslojs/encoding": "^1.1.0",
     "@pokepoke/core": "workspace:*",
     "@pokepoke/tsconfig": "workspace:*",
+    "@sinclair/typebox": "^0.34.30",
     "@supabase/supabase-js": "^2.49.1",
     "arctic": "^3.5.0",
     "drizzle-orm": "^0.40.0",

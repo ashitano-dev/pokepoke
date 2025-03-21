@@ -8,7 +8,12 @@ import { isErr } from "../../common/utils";
 import { newOAuthProvider, oauthProviderSchema } from "../../domain/value-object";
 import { CookieService } from "../../modules/cookie";
 import { ENV } from "../../modules/env";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { backendBaseUrl, mobileBaseUrl, oauthRequestUseCase } from "../global-instances";
 
 export const OAuthRequestRouter = new Elysia().get(
@@ -72,6 +77,11 @@ export const OAuthRequestRouter = new Elysia().get(
 			[OAUTH_CODE_VERIFIER_COOKIE_NAME]: t.Optional(t.String()),
 			[OAUTH_REDIRECT_URL_COOKIE_NAME]: t.Optional(t.String()),
 		}),
+		response: {
+			302: t.Void(),
+			400: t.Union([ErrorResponseSchema("INVALID_REDIRECT_URL")]),
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Auth"],
 		},

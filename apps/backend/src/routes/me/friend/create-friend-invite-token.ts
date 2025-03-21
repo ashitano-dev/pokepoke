@@ -1,5 +1,6 @@
-import Elysia from "elysia";
-import { authGuard } from "../../../modules/auth-guard";
+import Elysia, { t } from "elysia";
+import { AuthGuardResponseSchema, authGuard } from "../../../modules/auth-guard";
+import { InternalServerErrorResponseSchema } from "../../../modules/error";
 import { createFriendInviteTokenUseCase } from "../../global-instances";
 
 export const CreateFriendInviteTokenRouter = new Elysia().use(authGuard()).post(
@@ -11,7 +12,15 @@ export const CreateFriendInviteTokenRouter = new Elysia().use(authGuard()).post(
 			friendInviteToken: result.friendInviteToken.token,
 		};
 	},
+
 	{
+		response: {
+			200: t.Object({
+				friendInviteToken: t.String(),
+			}),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Me"],
 		},

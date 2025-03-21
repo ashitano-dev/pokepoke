@@ -1,14 +1,17 @@
+import { type Static, Type } from "@sinclair/typebox";
 import type { User } from "../../domain/entities";
 
-type UserResponse = {
-	id: string;
-	name: string;
-	email: string;
-	emailVerified: boolean;
-	iconUrl: string | null;
-	createdAt: string;
-	updatedAt: string;
-};
+export const UserResponseSchema = Type.Object({
+	id: Type.String(),
+	name: Type.String(),
+	email: Type.String(),
+	emailVerified: Type.Boolean(),
+	iconUrl: Type.Union([Type.String(), Type.Null()]),
+	createdAt: Type.String({ format: "date-time" }),
+	updatedAt: Type.String({ format: "date-time" }),
+});
+
+export type UserResponse = Static<typeof UserResponseSchema>;
 
 export const UserPresenter = (user: User): UserResponse => {
 	return {

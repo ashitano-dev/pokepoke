@@ -1,9 +1,13 @@
 import Elysia, { t } from "elysia";
 import { isErr } from "../../common/utils";
 import { newUserId } from "../../domain/value-object";
-import { CardPresenter } from "../../interface-adapter/presenters";
-import { authGuard } from "../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import { CardPresenter, CardResponseSchema } from "../../interface-adapter/presenters";
+import { AuthGuardResponseSchema, authGuard } from "../../modules/auth-guard";
+import {
+	BadRequestException,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { packCardCollectionUseCase } from "../global-instances";
 
 export const PackCardCollection = new Elysia().use(authGuard()).get(
@@ -33,6 +37,16 @@ export const PackCardCollection = new Elysia().use(authGuard()).get(
 		params: t.Object({
 			friendId: t.String(),
 		}),
+		response: {
+			200: t.Array(
+				t.Object({
+					count: t.Integer(),
+					card: CardResponseSchema,
+				}),
+			),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Pack"],
 		},

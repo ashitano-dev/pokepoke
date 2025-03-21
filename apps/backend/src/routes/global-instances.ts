@@ -1,5 +1,6 @@
 import { getBackendBaseUrl, getMobileBaseScheme } from "@pokepoke/core/utils";
 import { SessionTokenService } from "../application/services/session-token";
+import { ValidateSessionUseCase } from "../application/use-cases/auth";
 import { LogoutUseCase } from "../application/use-cases/auth/logout.usecase";
 import {
 	ApplyFriendUseCase,
@@ -73,3 +74,8 @@ export const getAllFriendTradesUseCase = new GetAllFriendTradesUseCase(tradeRepo
 export const tradeRequestUseCase = new TradeRequestUseCase(tradeRepository, userRepository);
 export const tradeConfirmUseCase = new TradeConfirmUseCase(tradeRepository, userRepository, packRepository);
 export const packCardCollectionUseCase = new PackCardCollectionUseCase(packRepository, userRepository);
+export const validateSessionUseCase = new ValidateSessionUseCase(
+	sessionTokenService,
+	sessionRepository,
+	userRepository,
+);

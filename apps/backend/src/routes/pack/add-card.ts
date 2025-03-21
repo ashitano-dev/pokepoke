@@ -2,8 +2,13 @@ import Elysia, { t } from "elysia";
 import { ulid } from "ulid";
 import { isErr } from "../../common/utils";
 import { newCardId, newUserId } from "../../domain/value-object";
-import { authGuard } from "../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import { AuthGuardResponseSchema, authGuard } from "../../modules/auth-guard";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { addCardUseCase } from "../global-instances";
 
 export const AddCardRouter = new Elysia().use(authGuard()).post(
@@ -57,6 +62,12 @@ export const AddCardRouter = new Elysia().use(authGuard()).post(
 			location: t.String(),
 			shootingDate: t.String(),
 		}),
+		response: {
+			200: t.Void(),
+			400: t.Union([ErrorResponseSchema("NOT_FRIEND"), ErrorResponseSchema("BAD_IMAGE")]),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Pack"],
 		},

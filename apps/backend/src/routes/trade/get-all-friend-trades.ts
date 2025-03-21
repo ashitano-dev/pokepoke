@@ -2,8 +2,14 @@ import Elysia, { t } from "elysia";
 import { isErr } from "../../common/utils";
 import { newUserId } from "../../domain/value-object";
 import { TradeListPresenter } from "../../interface-adapter/presenters";
-import { authGuard } from "../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import { TradeListResponseSchema } from "../../interface-adapter/presenters/trade";
+import { AuthGuardResponseSchema, authGuard } from "../../modules/auth-guard";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { getAllFriendTradesUseCase } from "../global-instances";
 
 export const GetAllFriendTradesRouter = new Elysia().use(authGuard()).get(
@@ -32,6 +38,12 @@ export const GetAllFriendTradesRouter = new Elysia().use(authGuard()).get(
 		params: t.Object({
 			friendId: t.String(),
 		}),
+		response: {
+			200: TradeListResponseSchema,
+			400: t.Union([ErrorResponseSchema("NOT_FRIEND"), ErrorResponseSchema("PACK_NOT_FOUND")]),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Trade"],
 		},
