@@ -1,3 +1,5 @@
+import { getBackendBaseUrl } from "@pokepoke/core/utils";
+import { ENV } from "../../modules/env";
 import type { FriendshipId, PackId, UserId } from "../value-object";
 import type { Card } from "./card";
 
@@ -29,4 +31,9 @@ export const createPack = (arg: {
 		createdAt: now,
 		updatedAt: now,
 	};
+};
+
+export const generatePackImageUrl = (packId: PackId): string => {
+	const backendBaseUrl = getBackendBaseUrl(ENV.NODE_ENV === "production");
+	return new URL(`/packs/${packId}/image`, backendBaseUrl).toString();
 };
