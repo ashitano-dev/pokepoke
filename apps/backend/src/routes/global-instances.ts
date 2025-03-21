@@ -12,6 +12,7 @@ import {
 	AddCardUseCase,
 	GetCardImageUseCase,
 	GetFriendPackUseCase,
+	GetPackImageUseCase,
 	PackCardCollectionUseCase,
 } from "../application/use-cases/pack";
 import {
@@ -63,7 +64,12 @@ export const oauthLoginCallbackUseCase = new OAuthLoginCallbackUseCase(
 	userRepository,
 );
 
-export const applyFriendUseCase = new ApplyFriendUseCase(friendInviteTokenRepository, userRepository, packRepository);
+export const applyFriendUseCase = new ApplyFriendUseCase(
+	friendInviteTokenRepository,
+	userRepository,
+	packRepository,
+	imageRepository,
+);
 export const createFriendInviteTokenUseCase = new CreateFriendInviteTokenUseCase(friendInviteTokenRepository);
 export const getUserFriendsUseCase = new GetUserFriendsUseCase(userRepository);
 export const addCardUseCase = new AddCardUseCase(imageRepository, packRepository, userRepository);
@@ -79,3 +85,4 @@ export const validateSessionUseCase = new ValidateSessionUseCase(
 	sessionRepository,
 	userRepository,
 );
+export const getPackImageUseCase = new GetPackImageUseCase(imageRepository, packRepository);
