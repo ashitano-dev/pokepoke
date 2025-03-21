@@ -1,8 +1,12 @@
 import Elysia, { t } from "elysia";
 import { isErr } from "../../common/utils";
 import { newUserId } from "../../domain/value-object";
-import { authGuard } from "../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import { AuthGuardResponseSchema, authGuard } from "../../modules/auth-guard";
+import {
+	BadRequestException,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { tradeRequestUseCase } from "../global-instances";
 
 export const RequestPackTradeRouter = new Elysia().use(authGuard()).post(
@@ -32,6 +36,14 @@ export const RequestPackTradeRouter = new Elysia().use(authGuard()).post(
 		params: t.Object({
 			friendId: t.String(),
 		}),
+		response: {
+			200: t.Object({
+				tradeId: t.String(),
+			}),
+			400: t.Union([t.Object({ code: t.Literal("NOT_FRIEND") })]),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Trade"],
 		},

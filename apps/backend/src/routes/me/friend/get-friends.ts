@@ -1,6 +1,7 @@
-import Elysia from "elysia";
-import { FriendUserPresenter } from "../../../interface-adapter/presenters";
-import { authGuard } from "../../../modules/auth-guard";
+import Elysia, { t } from "elysia";
+import { FriendUserPresenter, FriendUserResponseSchema } from "../../../interface-adapter/presenters";
+import { AuthGuardResponseSchema, authGuard } from "../../../modules/auth-guard";
+import { InternalServerErrorResponseSchema } from "../../../modules/error";
 import { getUserFriendsUseCase } from "../../global-instances";
 
 export const GetFriendsRouter = new Elysia().use(authGuard()).get(
@@ -13,6 +14,13 @@ export const GetFriendsRouter = new Elysia().use(authGuard()).get(
 		};
 	},
 	{
+		response: {
+			200: t.Object({
+				friends: t.Array(FriendUserResponseSchema),
+			}),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Me"],
 		},

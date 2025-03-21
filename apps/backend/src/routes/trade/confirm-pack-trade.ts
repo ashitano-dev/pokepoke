@@ -2,8 +2,14 @@ import Elysia, { t } from "elysia";
 import { isErr } from "../../common/utils";
 import { newTradeId, newUserId } from "../../domain/value-object";
 import { TradePresenter } from "../../interface-adapter/presenters";
-import { authGuard } from "../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import { TradeResponseSchema } from "../../interface-adapter/presenters/trade";
+import { AuthGuardResponseSchema, authGuard } from "../../modules/auth-guard";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { tradeConfirmUseCase } from "../global-instances";
 
 export const ConfirmPackTradeRouter = new Elysia().use(authGuard()).post(
@@ -39,6 +45,21 @@ export const ConfirmPackTradeRouter = new Elysia().use(authGuard()).post(
 			friendId: t.String(),
 			tradeId: t.String(),
 		}),
+		response: {
+			200: TradeResponseSchema,
+			400: t.Union([
+				ErrorResponseSchema("NOT_FRIEND"),
+				ErrorResponseSchema("ALREADY_CONFIRMED"),
+				ErrorResponseSchema("NOT_REQUESTED"),
+				ErrorResponseSchema("REQUESTER_IS_YOU"),
+				ErrorResponseSchema("CARD_COUNT_TOO_LOW"),
+				ErrorResponseSchema("PACK_NOT_FOUND"),
+				ErrorResponseSchema("REQUEST_USER_NOT_FOUND"),
+				ErrorResponseSchema("CONFIRM_USER_NOT_FOUND"),
+			]),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Trade"],
 		},

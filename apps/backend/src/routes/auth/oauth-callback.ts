@@ -8,7 +8,12 @@ import { convertRedirectableMobileScheme, isErr, validateRedirectUrl } from "../
 import { newOAuthProvider, oauthProviderSchema } from "../../domain/value-object";
 import { CookieService } from "../../modules/cookie";
 import { ENV } from "../../modules/env";
-import { BadRequestException, InternalServerErrorException } from "../../modules/error";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../modules/error";
 import { backendBaseUrl, mobileBaseUrl, oauthLoginCallbackUseCase } from "../global-instances";
 
 export const OAuthCallbackRouter = new Elysia().get(
@@ -125,6 +130,11 @@ export const OAuthCallbackRouter = new Elysia().get(
 				minLength: 1,
 			}),
 		}),
+		response: {
+			302: t.Void(),
+			400: t.Union([ErrorResponseSchema("INVALID_REDIRECT_URL")]),
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Auth"],
 		},

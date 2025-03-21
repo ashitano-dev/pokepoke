@@ -1,7 +1,12 @@
 import Elysia, { t } from "elysia";
 import { isErr } from "../../../common/utils";
-import { authGuard } from "../../../modules/auth-guard";
-import { BadRequestException, InternalServerErrorException } from "../../../modules/error";
+import { AuthGuardResponseSchema, authGuard } from "../../../modules/auth-guard";
+import {
+	BadRequestException,
+	ErrorResponseSchema,
+	InternalServerErrorException,
+	InternalServerErrorResponseSchema,
+} from "../../../modules/error";
 import { applyFriendUseCase } from "../../global-instances";
 
 export const ApplyFriendRouter = new Elysia().use(authGuard()).post(
@@ -30,6 +35,16 @@ export const ApplyFriendRouter = new Elysia().use(authGuard()).post(
 		body: t.Object({
 			friendInviteToken: t.String(),
 		}),
+		response: {
+			200: t.Void(),
+			400: t.Union([
+				ErrorResponseSchema("INVALID_TOKEN"),
+				ErrorResponseSchema("ALREADY_FRIENDED"),
+				ErrorResponseSchema("TOKEN_IS_EXPIRED"),
+			]),
+			401: AuthGuardResponseSchema[401],
+			500: InternalServerErrorResponseSchema,
+		},
 		detail: {
 			tags: ["Me"],
 		},
