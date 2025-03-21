@@ -41,7 +41,7 @@ export const createCard = (arg: {
 	};
 };
 
-export const generateCardImageUrl = (card: Card): string => {
+export const generateCardImageUrl = (cardId: CardId): string => {
 	const backendBaseUrl = getBackendBaseUrl(ENV.NODE_ENV === "production");
-	return new URL(`/cards/${card.id}/image`, backendBaseUrl).toString();
+	return new URL(`/cards/${cardId}/image`, backendBaseUrl).toString();
 };

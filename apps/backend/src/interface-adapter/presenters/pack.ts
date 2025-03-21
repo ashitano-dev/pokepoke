@@ -37,7 +37,7 @@ export const CardPresenter = (card: Card): CardResponse => {
 		backgroundColor: card.backgroundColor,
 		isEx: card.isEx,
 		numDia: card.numDia,
-		imageUrl: generateCardImageUrl(card),
+		imageUrl: generateCardImageUrl(card.id),
 		createdAt: card.createdAt.toISOString(),
 		updatedAt: card.updatedAt.toISOString(),
 	};
