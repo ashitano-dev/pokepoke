@@ -9,3 +9,7 @@ export {
 	SESSION_EXPIRES_SPAN_DAYS,
 	SESSION_REFRESH_SPAN_DAYS,
 } from "./session";
+export {
+	friendInviteTokenExpiresSpan,
+	FRIEND_INVITE_TOKEN_EXPIRES_SPAN,
+} from "./token";

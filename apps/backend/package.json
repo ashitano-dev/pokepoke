@@ -6,13 +6,15 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env.local ./src/server.ts",
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
-    "check:fix": "bun run check --write",
+    "check:fix": "pnpm run check --write",
     "build": "tsx build.ts",
     "start": "node ./dist/index.mjs",
     "db:gen": "drizzle-kit generate",
-    "db:mig": "drizzle-kit migrate && supabase db diff -f pokepoke"
+    "db:mig": "drizzle-kit migrate && supabase db diff -f pokepoke",
+    "db:seed": "tsx --env-file=.env.local ./drizzle/seed.ts"
   },
   "dependencies": {
+    "@bogeychan/elysia-logger": "^0.1.8",
     "@elysiajs/node": "~1.2.6",
     "@elysiajs/swagger": "^1.2.2",
     "@oslojs/crypto": "^1.0.1",
@@ -22,6 +24,7 @@
     "arctic": "^3.5.0",
     "drizzle-orm": "^0.40.0",
     "elysia": "~1.2.25",
+    "pino-pretty": "^13.0.0",
     "postgres": "^3.4.5",
     "ulid": "^2.4.0"
   },
