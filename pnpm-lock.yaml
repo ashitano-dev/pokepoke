@@ -62,6 +62,9 @@ importers:
       '@pokepoke/tsconfig':
         specifier: workspace:*
         version: link:../../tools/tsconfig
+      '@sinclair/typebox':
+        specifier: ^0.34.30
+        version: 0.34.30
       '@supabase/supabase-js':
         specifier: ^2.49.1
         version: 2.49.1
@@ -322,6 +325,9 @@ importers:
       '@pokepoke/design-token':
         specifier: workspace:*
         version: link:../../packages/design-token
+      '@pokepoke/eden-fetcher':
+        specifier: workspace:*
+        version: link:../../packages/eden-fetcher
       '@pokepoke/tailwind-helper':
         specifier: workspace:*
         version: link:../../packages/tailwind-helper
@@ -456,6 +462,22 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
     devDependencies:
+      '@pokepoke/tsconfig':
+        specifier: workspace:*
+        version: link:../../tools/tsconfig
+
+  packages/eden-fetcher:
+    dependencies:
+      '@elysiajs/eden':
+        specifier: ^1.2.0
+        version: 1.2.0(elysia@1.2.25(@sinclair/typebox@0.34.30)(openapi-types@12.1.3)(typescript@5.8.2))
+    devDependencies:
+      '@pokepoke/backend':
+        specifier: workspace:*
+        version: link:../../apps/backend
+      '@pokepoke/core':
+        specifier: workspace:*
+        version: link:../core
       '@pokepoke/tsconfig':
         specifier: workspace:*
         version: link:../../tools/tsconfig
@@ -1329,6 +1351,11 @@ packages:
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
     engines: {node: '>=0.8.0'}
+
+  '@elysiajs/eden@1.2.0':
+    resolution: {integrity: sha512-MpV45ahuF+iFZUg4tyJbLr9qxzY99m8clJVgQrDrz7Qh6eOKQ8MY6vjYMj3Wh21pTIRHPHzOLhVorRGby1/Owg==}
+    peerDependencies:
+      elysia: '>= 1.2.0'
 
   '@elysiajs/node@1.2.6':
     resolution: {integrity: sha512-qauTs0YNLvfSyqW8k8pDCazd3nPQtFOeDH/cSz1wBhAGn1HL1PQlywnK6V0+bOGemkKlxLIjhmvbHxGrNzZMSg==}
@@ -8882,6 +8909,10 @@ snapshots:
   '@egjs/hammerjs@2.0.17':
     dependencies:
       '@types/hammerjs': 2.0.46
+
+  '@elysiajs/eden@1.2.0(elysia@1.2.25(@sinclair/typebox@0.34.30)(openapi-types@12.1.3)(typescript@5.8.2))':
+    dependencies:
+      elysia: 1.2.25(@sinclair/typebox@0.34.30)(openapi-types@12.1.3)(typescript@5.8.2)
 
   '@elysiajs/node@1.2.6(elysia@1.2.25(@sinclair/typebox@0.34.30)(openapi-types@12.1.3)(typescript@5.8.2))(formidable@3.5.2)(ws@8.18.1)':
     dependencies:
