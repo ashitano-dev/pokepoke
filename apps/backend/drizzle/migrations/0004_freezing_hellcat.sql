@@ -1,0 +1,1 @@
+ALTER TABLE "cards" ALTER COLUMN "shooting_date" SET DATA TYPE varchar;

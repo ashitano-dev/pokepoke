@@ -22,6 +22,20 @@
       "when": 1742371698130,
       "tag": "0002_medical_grey_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742427192473,
+      "tag": "0003_fat_iron_fist",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1742447286683,
+      "tag": "0004_freezing_hellcat",
+      "breakpoints": true
     }
   ]
 }

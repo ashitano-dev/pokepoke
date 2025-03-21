@@ -1,4 +1,5 @@
 import { exit } from "node:process";
+import { ulid } from "ulid";
 import { SessionTokenService } from "../src/application/services/session-token";
 import { createOAuthAccount, createSession, createUser } from "../src/domain/entities";
 import { newOAuthProvider, newOAuthProviderId, newSessionId, newUserId } from "../src/domain/value-object";
@@ -30,6 +31,8 @@ const session = createSession({
 	id: sessionId,
 	userId: user.id,
 });
+
+const myUserId = "01JPNB963G26R7Q9QTCC80ZB07";
 
 // biome-ignore lint/suspicious/noConsoleLog: <explanation>
 console.log("Seeding...");
@@ -68,5 +71,34 @@ await drizzleService.db
 			expiresAt: session.expiresAt,
 		},
 	});
+
+await drizzleService.db
+	.insert(drizzleService.schema.friendships)
+	.values({ id: "friendship", firstUserId: user.id, secondUserId: myUserId })
+	.onConflictDoNothing();
+
+await drizzleService.db
+	.insert(drizzleService.schema.packs)
+	.values({
+		id: ulid(),
+		title: "koutyuke",
+		createUserId: user.id,
+		targetUserId: myUserId,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	})
+	.onConflictDoNothing();
+
+await drizzleService.db
+	.insert(drizzleService.schema.packs)
+	.values({
+		id: ulid(),
+		title: "fooo",
+		createUserId: myUserId,
+		targetUserId: user.id,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	})
+	.onConflictDoNothing();
 
 exit(0);

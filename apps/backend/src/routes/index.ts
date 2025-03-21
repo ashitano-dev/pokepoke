@@ -6,6 +6,7 @@ import { cors } from "../modules/cors";
 import { error } from "../modules/error";
 import { AuthRouter } from "./auth";
 import { MeRouter } from "./me";
+import { PackRouter } from "./pack";
 
 export const app = new Elysia({ strictPath: false, adapter: node() })
 	.use(
@@ -41,12 +42,14 @@ export const app = new Elysia({ strictPath: false, adapter: node() })
 					{ name: "App", description: "General endpoints" },
 					{ name: "Auth", description: "Authentication endpoints" },
 					{ name: "Me", description: "Endpoints for the current user" },
+					{ name: "Pack", description: "Endpoints for packs" },
 				],
 			},
 		}),
 	)
 	.use(AuthRouter)
 	.use(MeRouter)
+	.use(PackRouter)
 	.get("/", async () => {
 		return "Hello, PokePoke!";
 	});
