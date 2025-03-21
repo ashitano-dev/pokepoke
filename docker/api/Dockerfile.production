@@ -1,0 +1,22 @@
+FROM node:22.14.0-slim AS builder
+
+WORKDIR /workspaces/pokepoke/
+
+COPY . .
+
+RUN corepack enable && corepack prepare pnpm@10.6.3 --activate
+
+WORKDIR /workspaces/pokepoke/apps/backend/
+
+RUN pnpm install --frozen-lockfile \
+  && pnpm build
+
+
+FROM node:22.14.0-slim AS runner
+
+WORKDIR /workspaces/pokepoke/apps/backend/
+
+COPY --chown=nonroot:nonroot --from=builder /workspaces/pokepoke/apps/backend/dist ./dist
+
+EXPOSE ${PORT}
+CMD ["node", "dist/server.mjs"]
