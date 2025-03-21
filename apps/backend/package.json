@@ -9,7 +9,7 @@
     "dev": "tsx watch --env-file=.env.local ./src/server.ts",
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
     "check:fix": "pnpm run check --write",
-    "build": "tsx build.ts && mkdir -p ./dist/fonts ./dist/images && cp -r ./src/application/use-cases/pack/generate-card-image/fonts/. ./dist/fonts && cp -r ./src/application/use-cases/pack/generate-card-image/images/. ./dist/images",
+    "build": "tsx build.ts && mkdir -p ./dist/fonts ./dist/images && cp -r ./src/application/services/generate-image/fonts/. ./dist/fonts && cp -r ./src/application/services/generate-image/images/. ./dist/images",
     "start": "node --env-file=.env.production.local ./dist/server.mjs",
     "db:gen": "drizzle-kit generate",
     "db:mig": "drizzle-kit migrate && supabase db diff -f pokepoke",

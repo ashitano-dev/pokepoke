@@ -2,7 +2,7 @@ import type { Err, Result } from "../../../../common/utils";
 import type { Card, Pack, Trade } from "../../../../domain/entities";
 import type { UserId } from "../../../../domain/value-object";
 
-export type GetAllFriendTradesUseCaseSuccessResult = {
+export type GetFriendTradesUseCaseSuccessResult = {
 	pack: Pack;
 	trades: {
 		trade: Trade;
@@ -10,13 +10,13 @@ export type GetAllFriendTradesUseCaseSuccessResult = {
 	}[];
 };
 
-export type GetAllFriendTradesUseCaseErrorResult = Err<"NOT_FRIEND" | "PACK_NOT_FOUND">;
+export type GetFriendTradesUseCaseErrorResult = Err<"NOT_FRIEND" | "PACK_NOT_FOUND">;
 
 export type GetAllFriendTradesUseCaseResult = Result<
-	GetAllFriendTradesUseCaseSuccessResult,
-	GetAllFriendTradesUseCaseErrorResult
+	GetFriendTradesUseCaseSuccessResult,
+	GetFriendTradesUseCaseErrorResult
 >;
 
-export interface IGetAllFriendTradesUseCase {
+export interface IGetFriendTradesUseCase {
 	execute(userId: UserId, friendUserId: UserId): Promise<GetAllFriendTradesUseCaseResult>;
 }

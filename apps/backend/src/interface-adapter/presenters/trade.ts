@@ -1,5 +1,5 @@
 import { type Static, Type } from "@sinclair/typebox";
-import type { Card, Pack, Trade } from "../../domain/entities";
+import { type Card, type Pack, type Trade, generateCardImageUrl, generatePackImageUrl } from "../../domain/entities";
 
 export const TradeResponseSchema = Type.Object({
 	id: Type.String(),
@@ -7,6 +7,9 @@ export const TradeResponseSchema = Type.Object({
 	pack: Type.Object({
 		id: Type.String(),
 		title: Type.String(),
+		imageUrl: Type.String(),
+		createdAt: Type.String(),
+		updatedAt: Type.String(),
 	}),
 	cards: Type.Array(
 		Type.Object({
@@ -17,6 +20,7 @@ export const TradeResponseSchema = Type.Object({
 			backgroundColor: Type.String(),
 			isEx: Type.Boolean(),
 			numDia: Type.Number(),
+			imageUrl: Type.String(),
 			createdAt: Type.String(),
 			updatedAt: Type.String(),
 		}),
@@ -34,6 +38,9 @@ export const TradePresenter = (trade: Trade, pack: Pack, cards: Card[]): TradeRe
 		pack: {
 			id: pack.id,
 			title: pack.title,
+			imageUrl: generatePackImageUrl(pack.id),
+			createdAt: pack.createdAt.toISOString(),
+			updatedAt: pack.updatedAt.toISOString(),
 		},
 		cards: cards.map(card => ({
 			id: card.id,
@@ -43,6 +50,7 @@ export const TradePresenter = (trade: Trade, pack: Pack, cards: Card[]): TradeRe
 			backgroundColor: card.backgroundColor,
 			isEx: card.isEx,
 			numDia: card.numDia,
+			imageUrl: generateCardImageUrl(card.id),
 			createdAt: card.createdAt.toISOString(),
 			updatedAt: card.updatedAt.toISOString(),
 		})),
@@ -55,6 +63,9 @@ export const TradeListResponseSchema = Type.Object({
 	pack: Type.Object({
 		id: Type.String(),
 		title: Type.String(),
+		imageUrl: Type.String(),
+		createdAt: Type.String(),
+		updatedAt: Type.String(),
 	}),
 	trades: Type.Array(
 		Type.Object({
@@ -69,6 +80,7 @@ export const TradeListResponseSchema = Type.Object({
 					backgroundColor: Type.String(),
 					isEx: Type.Boolean(),
 					numDia: Type.Number(),
+					imageUrl: Type.String(),
 					createdAt: Type.String(),
 					updatedAt: Type.String(),
 				}),
@@ -92,6 +104,9 @@ export const TradeListPresenter = (
 		pack: {
 			id: pack.id,
 			title: pack.title,
+			imageUrl: generatePackImageUrl(pack.id),
+			createdAt: pack.createdAt.toISOString(),
+			updatedAt: pack.updatedAt.toISOString(),
 		},
 		trades: trades.map(({ trade, cards }) => ({
 			id: trade.id,
@@ -104,6 +119,7 @@ export const TradeListPresenter = (
 				backgroundColor: card.backgroundColor,
 				isEx: card.isEx,
 				numDia: card.numDia,
+				imageUrl: generateCardImageUrl(card.id),
 				createdAt: card.createdAt.toISOString(),
 				updatedAt: card.updatedAt.toISOString(),
 			})),

@@ -12,10 +12,11 @@ import {
 	AddCardUseCase,
 	GetCardImageUseCase,
 	GetFriendPackUseCase,
+	GetPackImageUseCase,
 	PackCardCollectionUseCase,
 } from "../application/use-cases/pack";
 import {
-	GetAllFriendTradesUseCase,
+	GetFriendTradesUseCase,
 	GetTradeUseCase,
 	TradeConfirmUseCase,
 	TradeRequestUseCase,
@@ -63,14 +64,19 @@ export const oauthLoginCallbackUseCase = new OAuthLoginCallbackUseCase(
 	userRepository,
 );
 
-export const applyFriendUseCase = new ApplyFriendUseCase(friendInviteTokenRepository, userRepository, packRepository);
+export const applyFriendUseCase = new ApplyFriendUseCase(
+	friendInviteTokenRepository,
+	userRepository,
+	packRepository,
+	imageRepository,
+);
 export const createFriendInviteTokenUseCase = new CreateFriendInviteTokenUseCase(friendInviteTokenRepository);
 export const getUserFriendsUseCase = new GetUserFriendsUseCase(userRepository);
 export const addCardUseCase = new AddCardUseCase(imageRepository, packRepository, userRepository);
 export const getCardImageUseCase = new GetCardImageUseCase(imageRepository, packRepository);
 export const getFriendPackUseCase = new GetFriendPackUseCase(packRepository, userRepository);
 export const getTradeUseCase = new GetTradeUseCase(tradeRepository, userRepository, packRepository);
-export const getAllFriendTradesUseCase = new GetAllFriendTradesUseCase(tradeRepository, userRepository, packRepository);
+export const getFriendTradesUseCase = new GetFriendTradesUseCase(tradeRepository, userRepository, packRepository);
 export const tradeRequestUseCase = new TradeRequestUseCase(tradeRepository, userRepository);
 export const tradeConfirmUseCase = new TradeConfirmUseCase(tradeRepository, userRepository, packRepository);
 export const packCardCollectionUseCase = new PackCardCollectionUseCase(packRepository, userRepository);
@@ -79,3 +85,4 @@ export const validateSessionUseCase = new ValidateSessionUseCase(
 	sessionRepository,
 	userRepository,
 );
+export const getPackImageUseCase = new GetPackImageUseCase(imageRepository, packRepository);

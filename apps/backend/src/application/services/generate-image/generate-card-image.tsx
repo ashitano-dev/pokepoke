@@ -1,33 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import satori from "satori";
 import sharp from "sharp";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const toBase64Image = (image: Buffer<ArrayBufferLike>, type: "jpeg" | "png" = "jpeg") => {
-	return `data:image/${type};base64,${image.toString("base64")}`;
-};
-
-const resizeFileToBase64 = async (file: File, width: number, height?: number): Promise<string> => {
-	const arrayBuffer = await file.arrayBuffer();
-	const buffer = Buffer.from(arrayBuffer);
-
-	// sharp でリサイズ
-	const resizedBuffer = await sharp(buffer).resize({ width, height }).toBuffer();
-
-	return `data:${file.type};base64,${resizedBuffer.toString("base64")}`;
-};
-
-const mPlusRounded1c = fs.readFileSync(path.resolve(__dirname, "./fonts/m-plus-rounded1c-extra-bold.ttf"));
-const chango = fs.readFileSync(path.resolve(__dirname, "./fonts/chango-regular.ttf"));
-
-const exImg = toBase64Image(await sharp(path.resolve(__dirname, "./images/ex.png")).toBuffer(), "png");
-const diaImg = toBase64Image(await sharp(path.resolve(__dirname, "./images/dia.png")).toBuffer(), "png");
-const calendarIcon = toBase64Image(await sharp(path.resolve(__dirname, "./images/calendar.png")).toBuffer(), "png");
-const mapIcon = toBase64Image(await sharp(path.resolve(__dirname, "./images/map.png")).toBuffer(), "png");
+import { calendarIcon, chango, diaImg, exImg, mPlusRounded1c, mapIcon, resizeFileToBase64 } from "./utils";
 
 export const generateCardImage = async (
 	imageFile: File,
@@ -168,9 +141,9 @@ export const generateCardImage = async (
 		},
 	);
 
-	const pngBuffer = await sharp(Buffer.from(svg)).toFormat("jpeg").toBuffer();
+	const jpegBuffer = await sharp(Buffer.from(svg)).toFormat("jpeg").toBuffer();
 
-	return pngBuffer;
+	return jpegBuffer;
 
 	// 出力画像の保存
 	// fs.writeFileSync(path.join(__dirname, "output.png"), pngBuffer);

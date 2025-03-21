@@ -16,7 +16,7 @@ export {
 	isExpiredFriendInviteToken,
 } from "./friend-invite-token";
 export { createCard, generateCardImageUrl } from "./card";
-export { createPack } from "./pack";
+export { createPack, generatePackImageUrl } from "./pack";
 export { createTrade, createTradeCard, updateTrade } from "./trade";
 
 export type { Session } from "./session";

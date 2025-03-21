@@ -10,12 +10,12 @@ import {
 	InternalServerErrorException,
 	InternalServerErrorResponseSchema,
 } from "../../modules/error";
-import { getAllFriendTradesUseCase } from "../global-instances";
+import { getFriendTradesUseCase } from "../global-instances";
 
-export const GetAllFriendTradesRouter = new Elysia().use(authGuard()).get(
+export const GetFriendTradesRouter = new Elysia().use(authGuard()).get(
 	"/friends/:friendId/trades",
 	async ({ params: { friendId }, user }) => {
-		const result = await getAllFriendTradesUseCase.execute(user.id, newUserId(friendId));
+		const result = await getFriendTradesUseCase.execute(user.id, newUserId(friendId));
 
 		if (isErr(result)) {
 			const { code } = result;

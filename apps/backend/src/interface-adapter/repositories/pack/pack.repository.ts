@@ -37,6 +37,27 @@ interface FoundCardDto {
 
 export class PackRepository implements IPackRepository {
 	constructor(private readonly drizzleService: DrizzleService) {}
+	async findById(packId: string): Promise<Pack | null> {
+		const packs = await this.drizzleService.db
+			.select()
+			.from(this.drizzleService.schema.packs)
+			.where(eq(this.drizzleService.schema.packs.id, packId));
+
+		if (packs.length > 1) {
+			throw new Error("Multiple packs found for the same createUserId and targetUserId");
+		}
+
+		if (packs.length === 0) {
+			return null;
+		}
+
+		const cards = await this.drizzleService.db
+			.select()
+			.from(this.drizzleService.schema.cards)
+			.where(eq(this.drizzleService.schema.cards.packId, packs[0]!.id));
+
+		return this.convertToPack(packs[0]!, cards);
+	}
 
 	async save(pack: Pack): Promise<void> {
 		await this.drizzleService.db
