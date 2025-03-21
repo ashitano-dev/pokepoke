@@ -3,7 +3,7 @@ import type { UserId } from "../../../domain/value-object";
 import type { IImageRepository } from "../../../interface-adapter/repositories/image";
 import type { CreateCardDto, IPackRepository } from "../../../interface-adapter/repositories/pack";
 import type { IUserRepository } from "../../../interface-adapter/repositories/user";
-import { generateCardImage } from "./generate-card-image";
+import { generateCardImage } from "../../services/generate-image";
 import type { AddCardUseCaseResult, IAddCardUseCase } from "./interfaces/add-card.usecase.interface";
 
 export class AddCardUseCase implements IAddCardUseCase {
