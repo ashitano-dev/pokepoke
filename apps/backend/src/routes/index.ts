@@ -1,7 +1,7 @@
-import { logger } from "@bogeychan/elysia-logger";
 import { node } from "@elysiajs/node";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
+import logixlysia from "logixlysia";
 import { cors } from "../modules/cors";
 import { error } from "../modules/error";
 import { AuthRouter } from "./auth";
@@ -9,14 +9,20 @@ import { MeRouter } from "./me";
 import { PackRouter } from "./pack";
 import { TradeRouter } from "./trade";
 
-export const app = new Elysia({ strictPath: false, adapter: node() })
+export const app = new Elysia({
+	strictPath: false,
+	adapter: node(),
+})
 	.use(
-		logger({
-			transport: {
-				target: "pino-pretty",
-				options: {
-					colorize: true,
+		logixlysia({
+			config: {
+				showStartupMessage: false,
+				startupMessageFormat: "simple",
+				timestamp: {
+					translateTime: "yyyy-mm-dd HH:MM:ss",
 				},
+				ip: true,
+				customLogFormat: "🚀 {now} {level} {duration} {method} {pathname} {status} {message} {ip}",
 			},
 		}),
 	)
