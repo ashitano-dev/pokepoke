@@ -16,16 +16,18 @@ export class GetAllFriendTradesUseCase implements IGetAllFriendTradesUseCase {
 	) {}
 
 	public async execute(userId: UserId, friendUserId: UserId): Promise<GetAllFriendTradesUseCaseResult> {
-		const friendship = await this.userRepository.findFriendShipByUserIdAndFriendId(userId, friendUserId);
+		const friendship = await this.userRepository.findFriendshipByUserIds(userId, friendUserId);
 
 		if (!friendship) {
 			return err("NOT_FRIEND");
 		}
 
+		await this.tradeRepository.deletePendingTradeByRequestUserIdAndFriendshipId(userId, friendship.id);
+
 		const [trades, pack] = await Promise.all([
-			this.tradeRepository.findManyByUserIdAndFriendUserId(userId, friendUserId),
+			this.tradeRepository.findManyByFriendshipId(friendship.id),
 			// フレンドがつくった自分のパックを取得
-			this.packRepository.findByCreateUserIdAndTargetUserId(friendUserId, userId),
+			this.packRepository.findByOwnerIdAndFriendshipId(friendUserId, friendship.id),
 		]);
 
 		if (!pack) {

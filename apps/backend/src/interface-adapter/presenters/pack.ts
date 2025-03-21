@@ -3,8 +3,6 @@ import { type Card, type Pack, generateCardImageUrl } from "../../domain/entitie
 type PackResponse = {
 	id: string;
 	title: string;
-	createUserId: string;
-	targetUserId: string;
 	cards: CardResponse[];
 	createdAt: string;
 	updatedAt: string;
@@ -44,8 +42,6 @@ export const PackPresenter = (pack: Pack): PackResponse => {
 	return {
 		id: pack.id,
 		title: pack.title,
-		createUserId: pack.createUserId,
-		targetUserId: pack.targetUserId,
 		cards: pack.cards.map(CardPresenter),
 		createdAt: pack.createdAt.toISOString(),
 		updatedAt: pack.updatedAt.toISOString(),

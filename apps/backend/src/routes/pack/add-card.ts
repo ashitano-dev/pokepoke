@@ -31,6 +31,7 @@ export const AddCardRouter = new Elysia().use(authGuard()).post(
 		if (isErr(result)) {
 			const { code } = result;
 			switch (code) {
+				case "NOT_FRIEND":
 				case "BAD_IMAGE":
 					throw new BadRequestException({
 						name: code,

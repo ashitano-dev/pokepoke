@@ -1,7 +1,7 @@
 import { ulid } from "ulid";
 import { err } from "../../../common/utils";
 import { type Card, updateTrade } from "../../../domain/entities";
-import type { TradeId, UserId } from "../../../domain/value-object";
+import { type TradeId, type UserId, newTradeStatus } from "../../../domain/value-object";
 import type { IPackRepository } from "../../../interface-adapter/repositories/pack";
 import type { ITradeRepository } from "../../../interface-adapter/repositories/trade";
 import type { CreateTradeCardsDto } from "../../../interface-adapter/repositories/trade/";
@@ -15,8 +15,20 @@ export class TradeConfirmUseCase implements ITradeConfirmUseCase {
 		private readonly packRepository: IPackRepository,
 	) {}
 
-	public async execute(tradeId: TradeId, confirmUserId: UserId): Promise<TradeConfirmUseCaseResult> {
-		const trade = await this.tradeRepository.findById(tradeId);
+	public async execute(
+		tradeId: TradeId,
+		confirmUserId: UserId,
+		requestUserId: UserId,
+	): Promise<TradeConfirmUseCaseResult> {
+		const [friendship, trade] = await Promise.all([
+			this.userRepository.findFriendshipByUserIds(confirmUserId, requestUserId),
+			this.tradeRepository.findById(tradeId),
+		]);
+
+		if (!friendship) {
+			return err("NOT_FRIEND");
+		}
+
 		if (!trade) {
 			return err("NOT_REQUESTED");
 		}
@@ -25,10 +37,7 @@ export class TradeConfirmUseCase implements ITradeConfirmUseCase {
 			return err("REQUESTER_IS_YOU");
 		}
 
-		const [friendship, requestUser] = await Promise.all([
-			this.userRepository.findFriendShipByUserIdAndFriendId(confirmUserId, trade.requestUserId),
-			this.userRepository.findById(trade.requestUserId),
-		]);
+		const requestUser = await this.userRepository.findById(trade.requestUserId);
 
 		if (!friendship) {
 			return err("NOT_FRIEND");
@@ -38,13 +47,13 @@ export class TradeConfirmUseCase implements ITradeConfirmUseCase {
 			return err("REQUEST_USER_NOT_FOUND");
 		}
 
-		if (trade.confirmUserId !== null) {
+		if (trade.status === newTradeStatus("CONFIRMED")) {
 			return err("ALREADY_CONFIRMED");
 		}
 
 		const [requestUserCreatedPack, confirmUserCreatedPack] = await Promise.all([
-			this.packRepository.findByCreateUserIdAndTargetUserId(trade.requestUserId, confirmUserId),
-			this.packRepository.findByCreateUserIdAndTargetUserId(confirmUserId, trade.requestUserId),
+			this.packRepository.findByOwnerIdAndFriendshipId(trade.requestUserId, friendship.id),
+			this.packRepository.findByOwnerIdAndFriendshipId(confirmUserId, friendship.id),
 		]);
 
 		if (!requestUserCreatedPack || !confirmUserCreatedPack) {
@@ -60,9 +69,7 @@ export class TradeConfirmUseCase implements ITradeConfirmUseCase {
 		const confirmUserTradeCards = this.randomCardChoice(requestUserCreatedPack.cards, 5);
 
 		const updatedTrade = updateTrade(trade, {
-			requestUserCreatedPackId: requestUserCreatedPack.id,
-			confirmUserCreatedPackId: confirmUserCreatedPack.id,
-			confirmUserId: confirmUserId,
+			status: newTradeStatus("CONFIRMED"),
 		});
 
 		await Promise.all([
@@ -73,7 +80,6 @@ export class TradeConfirmUseCase implements ITradeConfirmUseCase {
 
 		return {
 			trade: updatedTrade,
-			friendUser: requestUser,
 			pack: requestUserCreatedPack,
 			cards: confirmUserTradeCards,
 		};

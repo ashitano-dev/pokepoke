@@ -1,29 +1,33 @@
-import type { CardId, PackId, TradCardId, TradeId, UserId } from "../value-object";
+import {
+	type CardId,
+	type FriendshipId,
+	type TradeCardId,
+	type TradeId,
+	type TradeStatus,
+	type UserId,
+	newTradeStatus,
+} from "../value-object";
 
 export interface Trade {
 	id: TradeId;
+	friendshipId: FriendshipId;
 	requestUserId: UserId;
-	requestUserCreatedPackId: PackId | null;
-	confirmUserId: UserId | null;
-	confirmUserCreatedPackId: PackId | null;
+	status: TradeStatus;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export const createTrade = (arg: {
 	id: TradeId;
+	friendshipId: FriendshipId;
 	requestUserId: UserId;
-	requestUserCreatedPackId: PackId | null;
-	confirmUserId: UserId | null;
-	confirmUserCreatedPackId: PackId | null;
 }): Trade => {
 	const now = new Date();
 	return {
 		id: arg.id,
+		friendshipId: arg.friendshipId,
 		requestUserId: arg.requestUserId,
-		requestUserCreatedPackId: arg.requestUserCreatedPackId,
-		confirmUserId: arg.confirmUserId,
-		confirmUserCreatedPackId: arg.confirmUserCreatedPackId,
+		status: newTradeStatus("PENDING"),
 		createdAt: now,
 		updatedAt: now,
 	};
@@ -32,22 +36,20 @@ export const createTrade = (arg: {
 export const updateTrade = (
 	trade: Trade,
 	arg: {
-		requestUserCreatedPackId?: PackId | null;
-		confirmUserId?: UserId | null;
-		confirmUserCreatedPackId?: PackId | null;
+		status: TradeStatus;
 	},
 ): Trade => {
 	const now = new Date();
 
 	return {
 		...trade,
-		...arg,
+		status: arg.status,
 		updatedAt: now,
 	};
 };
 
-export interface TradCard {
-	id: TradCardId;
+export interface TradeCard {
+	id: TradeCardId;
 	tradeId: TradeId;
 	userId: UserId;
 	cardId: CardId;
@@ -55,12 +57,12 @@ export interface TradCard {
 	updatedAt: Date;
 }
 
-export const createTradCard = (arg: {
-	id: TradCardId;
+export const createTradeCard = (arg: {
+	id: TradeCardId;
 	tradeId: TradeId;
 	userId: UserId;
 	cardId: CardId;
-}): TradCard => {
+}): TradeCard => {
 	const now = new Date();
 
 	return {

@@ -1,15 +1,23 @@
 import { and, eq } from "drizzle-orm";
 import type { Pack } from "../../../domain/entities";
 import type { Card } from "../../../domain/entities";
-import { type CardId, type UserId, newCardId, newPackId, newUserId } from "../../../domain/value-object";
+import {
+	type CardId,
+	type FriendshipId,
+	type UserId,
+	newCardId,
+	newFriendshipId,
+	newPackId,
+	newUserId,
+} from "../../../domain/value-object";
 import type { DrizzleService } from "../../../infrastructure/drizzle";
 import type { CreateCardDto, IPackRepository } from "./interfaces/pack.repository.interface";
 
 interface FoundPackDto {
 	id: string;
 	title: string;
-	createUserId: string;
-	targetUserId: string;
+	ownerId: string;
+	friendshipId: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -36,8 +44,8 @@ export class PackRepository implements IPackRepository {
 			.values({
 				id: pack.id,
 				title: pack.title,
-				createUserId: pack.createUserId,
-				targetUserId: pack.targetUserId,
+				ownerId: pack.ownerId,
+				friendshipId: pack.friendshipId,
 				createdAt: pack.createdAt,
 				updatedAt: pack.updatedAt,
 			})
@@ -45,22 +53,19 @@ export class PackRepository implements IPackRepository {
 				target: [this.drizzleService.schema.packs.id],
 				set: {
 					title: pack.title,
-					createUserId: pack.createUserId,
-					targetUserId: pack.targetUserId,
-					createdAt: pack.createdAt,
 					updatedAt: pack.updatedAt,
 				},
 			});
 	}
 
-	async findByCreateUserIdAndTargetUserId(createUserId: UserId, targetUserId: UserId): Promise<Pack | null> {
+	async findByOwnerIdAndFriendshipId(ownerUserId: UserId, friendshipId: FriendshipId): Promise<Pack | null> {
 		const packs = await this.drizzleService.db
 			.select()
 			.from(this.drizzleService.schema.packs)
 			.where(
 				and(
-					eq(this.drizzleService.schema.packs.createUserId, createUserId),
-					eq(this.drizzleService.schema.packs.targetUserId, targetUserId),
+					eq(this.drizzleService.schema.packs.ownerId, ownerUserId),
+					eq(this.drizzleService.schema.packs.friendshipId, friendshipId),
 				),
 			);
 
@@ -93,12 +98,12 @@ export class PackRepository implements IPackRepository {
 		return cards.length === 1 ? this.convertToCard(cards[0]!) : null;
 	}
 
-	async addCardByCreateUserIdAndTargetUserId(
-		createUserId: UserId,
-		targetUserId: UserId,
+	async addCardByOwnerIdAndFriendshipId(
+		ownerUserId: UserId,
+		friendshipId: FriendshipId,
 		card: CreateCardDto,
 	): Promise<void> {
-		const pack = await this.findByCreateUserIdAndTargetUserId(createUserId, targetUserId);
+		const pack = await this.findByOwnerIdAndFriendshipId(ownerUserId, friendshipId);
 
 		if (!pack) {
 			throw new Error("Pack not found");
@@ -138,8 +143,8 @@ export class PackRepository implements IPackRepository {
 		return {
 			id: newPackId(packDto.id),
 			title: packDto.title,
-			createUserId: newUserId(packDto.createUserId),
-			targetUserId: newUserId(packDto.targetUserId),
+			ownerId: newUserId(packDto.ownerId),
+			friendshipId: newFriendshipId(packDto.friendshipId),
 			cards: cardDtoList.map(this.convertToCard),
 			createdAt: packDto.createdAt,
 			updatedAt: packDto.updatedAt,

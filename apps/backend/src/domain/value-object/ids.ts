@@ -48,8 +48,8 @@ export const newTradeId = (rawTradeId: string) => {
 	return rawTradeId as TradeId;
 };
 
-export type TradCardId = NewType<"TradCardId", string>;
+export type TradeCardId = NewType<"TradeCardId", string>;
 
-export const newTradCardId = (rawTradCardId: string) => {
-	return rawTradCardId as TradCardId;
+export const newTradeCardId = (rawTradCardId: string) => {
+	return rawTradCardId as TradeCardId;
 };

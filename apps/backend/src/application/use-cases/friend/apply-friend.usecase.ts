@@ -16,44 +16,46 @@ export class ApplyFriendUseCase implements IApplyFriendUseCase {
 	) {}
 
 	public async execute(token: string, user: User): Promise<ApplyFriendUseCaseResult> {
-		const { user: friend, friendInviteToken } =
+		const { user: friendUser, friendInviteToken } =
 			await this.friendInviteTokenRepository.findFriendInviteTokenAndUserByToken(token);
 
-		if (!friend || !friendInviteToken) {
+		if (!friendUser || !friendInviteToken) {
 			return err("INVALID_TOKEN");
 		}
 
-		const friendship = await this.userRepository.findFriendShipByUserIdAndFriendId(user.id, friend.id);
+		const friendship = await this.userRepository.findFriendshipByUserIds(user.id, friendUser.id);
 
 		if (friendship) {
 			return err("ALREADY_FRIENDED");
 		}
 
-		await this.friendInviteTokenRepository.deleteByUserId(friend.id);
+		await this.friendInviteTokenRepository.deleteByUserId(friendUser.id);
 
 		if (isExpiredFriendInviteToken(friendInviteToken)) {
 			return err("TOKEN_IS_EXPIRED");
 		}
 
+		const friendshipId = newFriendshipId(ulid());
+
 		await this.userRepository.addFriend({
-			id: newFriendshipId(ulid()),
-			userId: user.id,
-			friendId: friend.id,
+			id: friendshipId,
+			user1: user.id,
+			user2: friendUser.id,
 		});
 
 		const userCreatedPack = createPack({
 			id: newPackId(ulid()),
-			title: `${friend.name} Pack`,
-			createUserId: user.id,
-			targetUserId: friend.id,
+			title: `${friendUser.name} Pack`,
+			ownerId: user.id,
+			friendshipId,
 			cards: [],
 		});
 
 		const friendCreatedPack = createPack({
 			id: newPackId(ulid()),
 			title: `${user.name} Pack`,
-			createUserId: friend.id,
-			targetUserId: user.id,
+			ownerId: friendUser.id,
+			friendshipId,
 			cards: [],
 		});
 
