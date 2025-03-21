@@ -1,4 +1,8 @@
+import { getBackendBaseUrl } from "@pokepoke/core/utils";
 import type { Cookie } from "elysia";
+import { ENV } from "../env";
+
+const backendBaseUrl = getBackendBaseUrl(ENV.NODE_ENV === "production");
 
 export type CookieAttributes = {
 	secure?: boolean;
@@ -31,7 +35,7 @@ export class CookieService<
 	) {
 		this.baseCookieAttributes = {
 			secure: production,
-			domain: production ? "mona-ca.com" : "localhost",
+			domain: backendBaseUrl.hostname,
 			sameSite: "lax",
 			httpOnly: true,
 			path: "/",

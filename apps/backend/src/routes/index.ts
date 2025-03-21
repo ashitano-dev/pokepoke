@@ -1,31 +1,38 @@
-import { logger } from "@bogeychan/elysia-logger";
 import { node } from "@elysiajs/node";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
+import logixlysia from "logixlysia";
 import { cors } from "../modules/cors";
+import { ENV } from "../modules/env";
 import { error } from "../modules/error";
 import { AuthRouter } from "./auth";
 import { MeRouter } from "./me";
 import { PackRouter } from "./pack";
 import { TradeRouter } from "./trade";
 
-export const app = new Elysia({ strictPath: false, adapter: node() })
+export const app = new Elysia({
+	strictPath: false,
+	adapter: node(),
+})
 	.use(
-		logger({
-			transport: {
-				target: "pino-pretty",
-				options: {
-					colorize: true,
+		logixlysia({
+			config: {
+				showStartupMessage: false,
+				startupMessageFormat: "simple",
+				timestamp: {
+					translateTime: "yyyy-mm-dd HH:MM:ss",
 				},
+				ip: true,
+				customLogFormat: "🚀 {now} {level} {duration} {method} {pathname} {status} {message} {ip}",
 			},
 		}),
 	)
 	.use(
 		cors({
 			origin: () => {
-				// if (app_env === "production") {
-				//   return ["mona-ca.com"];
-				// }
+				if (ENV.NODE_ENV === "production") {
+					return ["pokepoke.up.railway.app", /localhost:\d{4}$/];
+				}
 				return [/localhost:\d{4}$/];
 			},
 			allowedHeaders: ["Content-Type", "Authorization"],
