@@ -17,8 +17,8 @@ FROM node:22.14.0-slim AS runner
 WORKDIR /workspaces/pokepoke/apps/backend/
 
 COPY --from=builder /workspaces/pokepoke/apps/backend/dist ./dist
-COPY --from=builder /workspaces/pokepoke/apps/node_modules ./node_modules
-COPY --from=builder /workspaces/pokepoke/apps/package.json ./
+COPY --from=builder /workspaces/pokepoke/node_modules ./node_modules
+COPY --from=builder /workspaces/pokepoke/package.json ./
 
 EXPOSE ${PORT}
 CMD ["node", "dist/server.mjs"]
