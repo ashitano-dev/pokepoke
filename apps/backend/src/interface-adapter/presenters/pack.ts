@@ -1,5 +1,5 @@
 import { type Static, Type } from "@sinclair/typebox";
-import { type Card, type Pack, generateCardImageUrl } from "../../domain/entities";
+import { type Card, type Pack, generateCardImageUrl, generatePackImageUrl } from "../../domain/entities";
 
 export const CardResponseSchema = Type.Object({
 	id: Type.String(),
@@ -18,6 +18,7 @@ export const CardResponseSchema = Type.Object({
 export const PackResponseSchema = Type.Object({
 	id: Type.String(),
 	title: Type.String(),
+	imageUrl: Type.String(),
 	cards: Type.Array(CardResponseSchema),
 	createdAt: Type.String(),
 	updatedAt: Type.String(),
@@ -46,6 +47,7 @@ export const PackPresenter = (pack: Pack): PackResponse => {
 	return {
 		id: pack.id,
 		title: pack.title,
+		imageUrl: generatePackImageUrl(pack.id),
 		cards: pack.cards.map(CardPresenter),
 		createdAt: pack.createdAt.toISOString(),
 		updatedAt: pack.updatedAt.toISOString(),
