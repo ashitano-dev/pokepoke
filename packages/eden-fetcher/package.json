@@ -7,8 +7,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
-    "check:fix": "pnpm run check --write",
-    "typecheck": "tsc --noEmit"
+    "check:fix": "pnpm run check --write"
   },
   "dependencies": {
     "@elysiajs/eden": "^1.2.0"
