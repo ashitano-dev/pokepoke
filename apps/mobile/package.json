@@ -9,8 +9,7 @@
     "ios": "expo run:ios",
     "android": "expo run:android",
     "check": "biome check --error-on-warnings --no-errors-on-unmatched",
-    "check:fix": "bun run check --write",
-    "typecheck": "tsc --noEmit"
+    "check:fix": "bun run check --write"
   },
   "jest": {
     "preset": "jest-expo"
