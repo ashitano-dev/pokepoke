@@ -1,20 +1,9 @@
-import Elysia from "elysia";
-import { SessionTokenService } from "../../application/services/session-token";
-import { ValidateSessionUseCase } from "../../application/use-cases/auth";
+import Elysia, { t } from "elysia";
 import { readBearerToken } from "../../common/utils";
 import { isErr } from "../../common/utils";
 import type { Session, User } from "../../domain/entities";
-import { DrizzleService } from "../../infrastructure/drizzle";
-import { SessionRepository } from "../../interface-adapter/repositories/session";
-import { UserRepository } from "../../interface-adapter/repositories/user";
-import { ENV } from "../env";
-import { InternalServerErrorException, UnauthorizedException } from "../error";
-
-const drizzleService = new DrizzleService(ENV.DATABASE_URL);
-const sessionTokenService = new SessionTokenService(ENV.SESSION_PEPPER);
-const sessionRepository = new SessionRepository(drizzleService);
-const userRepository = new UserRepository(drizzleService);
-const validateSessionUseCase = new ValidateSessionUseCase(sessionTokenService, sessionRepository, userRepository);
+import { validateSessionUseCase } from "../../routes/global-instances";
+import { ErrorResponseSchema, InternalServerErrorException, UnauthorizedException } from "../error";
 
 /**
  * Creates an authentication guard plugin for Elysia with environment configuration.
@@ -43,20 +32,14 @@ const authGuard = <
 			},
 >(options?: {
 	requireEmailVerification?: boolean;
-	enableSessionCookieRefresh?: boolean;
 	includeSessionToken?: T;
 }) => {
-	const {
-		requireEmailVerification = true,
-		enableSessionCookieRefresh = true,
-		includeSessionToken = false,
-	} = options ?? {};
+	const { requireEmailVerification = false, includeSessionToken = false } = options ?? {};
 
 	const plugin = new Elysia({
 		name: "@pokepoke/auth",
 		seed: {
 			requireEmailVerification,
-			enableSessionCookieRefresh,
 			includeSessionToken,
 		},
 	}).derive<U, "scoped">({ as: "scoped" }, async ({ headers: { authorization } }): Promise<U> => {
@@ -92,15 +75,19 @@ const authGuard = <
 			});
 		}
 
-		// if (enableSessionCookieRefresh && cookie[SESSION_COOKIE_NAME]) {
-		// 	cookie[SESSION_COOKIE_NAME].expires = session.expiresAt;
-		// }
-
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		return (includeSessionToken ? { user, session, sessionToken } : { user, session }) as any;
 	});
 
 	return plugin;
+};
+
+export const AuthGuardResponseSchema = {
+	401: t.Union([
+		ErrorResponseSchema("SESSION_EXPIRED"),
+		ErrorResponseSchema("SESSION_OR_USER_NOT_FOUND"),
+		ErrorResponseSchema("EMAIL_VERIFICATION_IS_REQUIRED"),
+	]),
 };
 
 export { authGuard };

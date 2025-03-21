@@ -1,26 +1,30 @@
+import { type Static, Type } from "@sinclair/typebox";
 import { type Card, type Pack, generateCardImageUrl } from "../../domain/entities";
 
-type PackResponse = {
-	id: string;
-	title: string;
-	cards: CardResponse[];
-	createdAt: string;
-	updatedAt: string;
-};
+export const CardResponseSchema = Type.Object({
+	id: Type.String(),
+	packId: Type.String(),
+	title: Type.String(),
+	location: Type.Union([Type.String(), Type.Null()]),
+	shootingDate: Type.Union([Type.String(), Type.Null()]),
+	backgroundColor: Type.String(),
+	isEx: Type.Boolean(),
+	numDia: Type.Number(),
+	imageUrl: Type.String(),
+	createdAt: Type.String(),
+	updatedAt: Type.String(),
+});
 
-type CardResponse = {
-	id: string;
-	packId: string;
-	title: string;
-	location: string | null;
-	shootingDate: string | null;
-	backgroundColor: string;
-	isEx: boolean;
-	numDia: number;
-	imageUrl: string;
-	createdAt: string;
-	updatedAt: string;
-};
+export const PackResponseSchema = Type.Object({
+	id: Type.String(),
+	title: Type.String(),
+	cards: Type.Array(CardResponseSchema),
+	createdAt: Type.String(),
+	updatedAt: Type.String(),
+});
+
+export type CardResponse = Static<typeof CardResponseSchema>;
+export type PackResponse = Static<typeof PackResponseSchema>;
 
 export const CardPresenter = (card: Card): CardResponse => {
 	return {

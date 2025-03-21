@@ -1,10 +1,13 @@
+import { type Static, Type } from "@sinclair/typebox";
 import type { User } from "../../domain/entities";
 
-type FriendUserResponse = {
-	id: string;
-	name: string;
-	iconUrl: string | null;
-};
+export const FriendUserResponseSchema = Type.Object({
+	id: Type.String(),
+	name: Type.String(),
+	iconUrl: Type.Union([Type.String(), Type.Null()]),
+});
+
+export type FriendUserResponse = Static<typeof FriendUserResponseSchema>;
 
 export const FriendUserPresenter = (friendUser: User): FriendUserResponse => {
 	return {
