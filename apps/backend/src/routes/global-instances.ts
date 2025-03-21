@@ -16,7 +16,7 @@ import {
 	PackCardCollectionUseCase,
 } from "../application/use-cases/pack";
 import {
-	GetAllFriendTradesUseCase,
+	GetFriendTradesUseCase,
 	GetTradeUseCase,
 	TradeConfirmUseCase,
 	TradeRequestUseCase,
@@ -76,7 +76,7 @@ export const addCardUseCase = new AddCardUseCase(imageRepository, packRepository
 export const getCardImageUseCase = new GetCardImageUseCase(imageRepository, packRepository);
 export const getFriendPackUseCase = new GetFriendPackUseCase(packRepository, userRepository);
 export const getTradeUseCase = new GetTradeUseCase(tradeRepository, userRepository, packRepository);
-export const getAllFriendTradesUseCase = new GetAllFriendTradesUseCase(tradeRepository, userRepository, packRepository);
+export const getFriendTradesUseCase = new GetFriendTradesUseCase(tradeRepository, userRepository, packRepository);
 export const tradeRequestUseCase = new TradeRequestUseCase(tradeRepository, userRepository);
 export const tradeConfirmUseCase = new TradeConfirmUseCase(tradeRepository, userRepository, packRepository);
 export const packCardCollectionUseCase = new PackCardCollectionUseCase(packRepository, userRepository);

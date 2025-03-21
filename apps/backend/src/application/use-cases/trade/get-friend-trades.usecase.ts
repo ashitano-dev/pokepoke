@@ -5,10 +5,10 @@ import type { ITradeRepository } from "../../../interface-adapter/repositories/t
 import type { UserRepository } from "../../../interface-adapter/repositories/user";
 import type {
 	GetAllFriendTradesUseCaseResult,
-	IGetAllFriendTradesUseCase,
-} from "./interfaces/get-all-friend-trades.interface";
+	IGetFriendTradesUseCase,
+} from "./interfaces/get-friend-trades.usecase.interface";
 
-export class GetAllFriendTradesUseCase implements IGetAllFriendTradesUseCase {
+export class GetFriendTradesUseCase implements IGetFriendTradesUseCase {
 	constructor(
 		private readonly tradeRepository: ITradeRepository,
 		private readonly userRepository: UserRepository,
