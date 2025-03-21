@@ -1,7 +1,7 @@
 export const getBackendBaseUrl = (production: boolean): URL => {
-	return production ? new URL("http://localhost:8787") : new URL("http://localhost:8787");
+	return production ? new URL("https://pokepoke.up.railway.app") : new URL("http://localhost:8787");
 };
 
 export const getMobileBaseScheme = (): URL => {
-	return new URL("mona-ca://");
+	return new URL("pokepoke://");
 };

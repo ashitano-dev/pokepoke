@@ -3,6 +3,7 @@ import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import logixlysia from "logixlysia";
 import { cors } from "../modules/cors";
+import { ENV } from "../modules/env";
 import { error } from "../modules/error";
 import { AuthRouter } from "./auth";
 import { MeRouter } from "./me";
@@ -29,9 +30,9 @@ export const app = new Elysia({
 	.use(
 		cors({
 			origin: () => {
-				// if (app_env === "production") {
-				//   return ["mona-ca.com"];
-				// }
+				if (ENV.NODE_ENV === "production") {
+					return ["pokepoke.up.railway.app", /localhost:\d{4}$/];
+				}
 				return [/localhost:\d{4}$/];
 			},
 			allowedHeaders: ["Content-Type", "Authorization"],
