@@ -4,9 +4,7 @@ import { useColorScheme } from "react-native";
 import { localStorage } from "../../../shared/store";
 import type { ColorTheme } from "../types/theme";
 
-const themeAtom = atomWithStorage<ColorTheme>("themeAtom", "light", localStorage, {
-	getOnInit: true,
-});
+const themeAtom = atomWithStorage<ColorTheme>("themeAtom", "light", localStorage);
 
 const useTheme = () => {
 	const systemScheme = useColorScheme();

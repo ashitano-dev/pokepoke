@@ -11,6 +11,10 @@ import { ThemeProvider } from "../features/theme";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+export const unstable_settings = {
+	initialRouteName: "(auth)",
+};
+
 export default function RootLayout() {
 	const [loaded] = useFonts({
 		SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
@@ -30,7 +34,8 @@ export default function RootLayout() {
 		<SafeAreaProvider>
 			<JotaiProvider>
 				<ThemeProvider>
-					<Stack>
+					<Stack initialRouteName="(auth)">
+						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 						<Stack.Screen name="+not-found" />
 					</Stack>

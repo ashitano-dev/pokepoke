@@ -322,6 +322,9 @@ importers:
       '@expo/vector-icons':
         specifier: ^14.0.2
         version: 14.0.4
+      '@pokepoke/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@pokepoke/design-token':
         specifier: workspace:*
         version: link:../../packages/design-token
