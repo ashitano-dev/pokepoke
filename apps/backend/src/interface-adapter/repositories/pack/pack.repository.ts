@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { Pack } from "../../../domain/entities";
 import type { Card } from "../../../domain/entities";
 import {
@@ -137,6 +137,43 @@ export class PackRepository implements IPackRepository {
 					updatedAt: card.updatedAt,
 				},
 			});
+	}
+
+	public async findPackCardCollectionByOwnerIdAndFriendshipId(
+		friendUserId: UserId,
+		friendshipId: FriendshipId,
+	): Promise<
+		{
+			card: Card;
+			count: number;
+		}[]
+	> {
+		const packCardCollection = await this.drizzleService.db
+			.select({
+				card: this.drizzleService.schema.cards,
+				count: sql<number>`COUNT(${this.drizzleService.schema.cards.id})`.mapWith(Number),
+			})
+			.from(this.drizzleService.schema.tradesCards)
+			.innerJoin(
+				this.drizzleService.schema.cards,
+				eq(this.drizzleService.schema.tradesCards.cardId, this.drizzleService.schema.cards.id),
+			)
+			.innerJoin(
+				this.drizzleService.schema.packs,
+				eq(this.drizzleService.schema.cards.packId, this.drizzleService.schema.packs.id),
+			)
+			.where(
+				and(
+					eq(this.drizzleService.schema.packs.ownerId, friendUserId),
+					eq(this.drizzleService.schema.packs.friendshipId, friendshipId),
+				),
+			)
+			.groupBy(this.drizzleService.schema.cards.id);
+
+		return packCardCollection.map(({ card, count }) => ({
+			card: this.convertToCard(card),
+			count,
+		}));
 	}
 
 	private convertToPack(packDto: FoundPackDto, cardDtoList: FoundCardDto[]): Pack {

@@ -10,4 +10,14 @@ export interface IPackRepository {
 
 	findCardById(cardId: CardId): Promise<Card | null>;
 	addCardByOwnerIdAndFriendshipId(ownerUserId: UserId, friendshipId: FriendshipId, card: CreateCardDto): Promise<void>;
+
+	findPackCardCollectionByOwnerIdAndFriendshipId(
+		friendUserId: UserId,
+		friendshipId: FriendshipId,
+	): Promise<
+		{
+			card: Card;
+			count: number;
+		}[]
+	>;
 }
