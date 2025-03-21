@@ -8,6 +8,12 @@ import {
 } from "../application/use-cases/friend";
 import { OAuthLoginCallbackUseCase, OAuthRequestUseCase } from "../application/use-cases/oauth";
 import { AddCardUseCase, GetCardImageUseCase, GetFriendPackUseCase } from "../application/use-cases/pack";
+import {
+	GetAllFriendTradesUseCase,
+	GetTradeUseCase,
+	TradeConfirmUseCase,
+	TradeRequestUseCase,
+} from "../application/use-cases/trade";
 import { DrizzleService } from "../infrastructure/drizzle";
 import { SupabaseService } from "../infrastructure/supabase";
 import { OAuthProviderGateway } from "../interface-adapter/gateway/oauth-provider";
@@ -16,6 +22,7 @@ import { ImageRepository } from "../interface-adapter/repositories/image";
 import { OAuthAccountRepository } from "../interface-adapter/repositories/oauth-account";
 import { PackRepository } from "../interface-adapter/repositories/pack";
 import { SessionRepository } from "../interface-adapter/repositories/session";
+import { TradeRepository } from "../interface-adapter/repositories/trade";
 import { UserRepository } from "../interface-adapter/repositories/user";
 import { ENV } from "../modules/env";
 
@@ -36,6 +43,7 @@ const userRepository = new UserRepository(drizzleService);
 const oauthAccountRepository = new OAuthAccountRepository(drizzleService);
 const friendInviteTokenRepository = new FriendInviteTokenRepository(drizzleService);
 const packRepository = new PackRepository(drizzleService);
+const tradeRepository = new TradeRepository(drizzleService);
 const imageRepository = new ImageRepository(supabaseService);
 
 // UseCases
@@ -55,3 +63,7 @@ export const getUserFriendsUseCase = new GetUserFriendsUseCase(userRepository);
 export const addCardUseCase = new AddCardUseCase(imageRepository, packRepository);
 export const getCardImageUseCase = new GetCardImageUseCase(imageRepository, packRepository);
 export const getFriendPackUseCase = new GetFriendPackUseCase(packRepository);
+export const getTradeUseCase = new GetTradeUseCase(tradeRepository, userRepository, packRepository);
+export const getAllFriendTradesUseCase = new GetAllFriendTradesUseCase(tradeRepository, userRepository, packRepository);
+export const tradeRequestUseCase = new TradeRequestUseCase(tradeRepository);
+export const tradeConfirmUseCase = new TradeConfirmUseCase(tradeRepository, userRepository, packRepository);

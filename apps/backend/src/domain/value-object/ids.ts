@@ -41,3 +41,15 @@ export type PackId = NewType<"PackId", string>;
 export const newPackId = (rawPackId: string) => {
 	return rawPackId as PackId;
 };
+
+export type TradeId = NewType<"TradeId", string>;
+
+export const newTradeId = (rawTradeId: string) => {
+	return rawTradeId as TradeId;
+};
+
+export type TradCardId = NewType<"TradCardId", string>;
+
+export const newTradCardId = (rawTradCardId: string) => {
+	return rawTradCardId as TradCardId;
+};

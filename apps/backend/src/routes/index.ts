@@ -7,6 +7,7 @@ import { error } from "../modules/error";
 import { AuthRouter } from "./auth";
 import { MeRouter } from "./me";
 import { PackRouter } from "./pack";
+import { TradeRouter } from "./trade";
 
 export const app = new Elysia({ strictPath: false, adapter: node() })
 	.use(
@@ -43,6 +44,7 @@ export const app = new Elysia({ strictPath: false, adapter: node() })
 					{ name: "Auth", description: "Authentication endpoints" },
 					{ name: "Me", description: "Endpoints for the current user" },
 					{ name: "Pack", description: "Endpoints for packs" },
+					{ name: "Trade", description: "Endpoints for pack trades" },
 				],
 			},
 		}),
@@ -50,6 +52,7 @@ export const app = new Elysia({ strictPath: false, adapter: node() })
 	.use(AuthRouter)
 	.use(MeRouter)
 	.use(PackRouter)
+	.use(TradeRouter)
 	.get("/", async () => {
 		return "Hello, PokePoke!";
 	});
