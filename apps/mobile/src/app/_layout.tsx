@@ -34,7 +34,7 @@ export default function RootLayout() {
 		<SafeAreaProvider>
 			<JotaiProvider>
 				<ThemeProvider>
-					<Stack initialRouteName="(auth)">
+					<Stack initialRouteName="(auth)" screenOptions={{ headerShown: false }}>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 						<Stack.Screen name="+not-found" />

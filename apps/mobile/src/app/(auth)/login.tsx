@@ -5,7 +5,7 @@ import { Pressable, SafeAreaView, Text, View } from "react-native";
 import { useAccessToken } from "../../features/auth";
 import { BrandIcon, BrandLogo } from "../../shared/ui";
 
-const backendBaseUrl = getBackendBaseUrl(process.env.NODE_ENV === "production");
+const backendBaseUrl = getBackendBaseUrl(process.env.EXPO_PUBLIC_NODE_ENV === "production");
 
 const Login = () => {
 	const [error, setError] = useState<string | null>(null);

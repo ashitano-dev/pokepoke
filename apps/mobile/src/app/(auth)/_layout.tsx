@@ -6,14 +6,15 @@ const AuthLayout = () => {
 	const [accessToken] = useAccessToken();
 
 	if (accessToken) {
-		return <Redirect href="/(tabs)" />;
+		return <Redirect href="/(with-auth)" />;
 	}
 	return (
-		<CustomThemeProvider statusBarStyle="light" styleTheme="light">
+		<CustomThemeProvider statusBarStyle="dark" styleTheme="light">
 			<Stack
 				initialRouteName="login"
 				screenOptions={{
 					headerTransparent: true,
+					headerShown: false,
 				}}
 			>
 				<Stack.Screen name="login" options={{ headerShown: false }} />

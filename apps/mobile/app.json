@@ -33,7 +33,8 @@
           "resizeMode": "cover",
           "enableFullScreenImage_legacy": true
         }
-      ]
+      ],
+      "expo-barcode-scanner"
     ],
     "experiments": {
       "typedRoutes": true

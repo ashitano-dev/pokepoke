@@ -1,4 +1,3 @@
-import { Link } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../../features/theme";
 
@@ -37,7 +36,6 @@ export default function TabOneScreen() {
 				<View className="h-16 w-16 bg-black" />
 				<View className="h-16 w-16 bg-orange-9" />
 				<View className="h-16 w-16 bg-iris-9" />
-				<Link href="/(auth)/login">Login</Link>
 			</View>
 		</View>
 	);
